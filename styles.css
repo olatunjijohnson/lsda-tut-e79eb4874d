@@ -1,0 +1,11 @@
+/* Keep wide output (model summaries, matrices) inside its own scroll box so
+   the page body never scrolls horizontally on a phone. */
+pre, .cell-output, table { overflow-x: auto; max-width: 100%; }
+
+/* The exercise blocks are the point of the page: give them room to breathe. */
+.exercise-cell { margin-block: 1.25rem; }
+
+/* Note: .solution-note is deliberately not styled here. Interpretation blocks
+   are stripped from the public site (solutions live on Canvas), so a rule for
+   them would be dead CSS — and a hint in the stylesheet that such content
+   exists. */

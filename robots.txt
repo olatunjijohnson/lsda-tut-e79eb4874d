@@ -1,0 +1,4 @@
+# This build contains worked solutions and is linked from Canvas only.
+# Not for search indexing.
+User-agent: *
+Disallow: /
