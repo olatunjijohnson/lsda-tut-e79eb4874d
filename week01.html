@@ -486,7 +486,7 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOnRydWV9LCJjb2RlIjoiLmxz
 
 </div>
 <script type="webr-3-contents">
-eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6ImxpYnJhcnkobHNkYSlcbmRhdGEoY2F0dGxlLCBmZXYxKSJ9
+eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6ImxpYnJhcnkobHNkYSlcbmRhdGEoY2F0dGxlLCBmZXYxLCBwYWNrYWdlID0gXCJsc2RhXCIpIn0=
 </script>
 </div>
 </div>
@@ -513,16 +513,15 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTAyIn0sImNvZGUiOiJk
 </div>
 <div class="cell" data-exercise="q02" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q02">
-<code id="interpolate-8" class="solution-code d-none"># The data ship with the course package, so there is no file to read.
-data(cattle)
+<code id="interpolate-8" class="solution-code d-none">data(cattle)
 dim(cattle)
-head(cattle)</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-9-1"><a href="#interpolate-9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The data ship with the course package, so there is no file to read.</span></span>
-<span id="interpolate-9-2"><a href="#interpolate-9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(cattle)</span>
-<span id="interpolate-9-3"><a href="#interpolate-9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(cattle)</span>
-<span id="interpolate-9-4"><a href="#interpolate-9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cattle)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+head(cattle[, 1:5])</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-9-1"><a href="#interpolate-9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(cattle)</span>
+<span id="interpolate-9-2"><a href="#interpolate-9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(cattle)</span>
+<span id="interpolate-9-3"><a href="#interpolate-9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cattle[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<p>60 rows and 12 columns: one row per animal, the first column the treatment group and the remaining eleven the weights. Every animal has all eleven, so the design is balanced — which is what lets us treat the data as a 60 by 11 matrix at all.</p>
 <ol start="2" type="1">
 <li>Generate a spaghetti plot for the cattle data.</li>
 </ol>
@@ -547,27 +546,15 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTAzIn0sImNvZGUiOiJ0
 </div>
 <div class="cell" data-exercise="q03" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q03">
-<code id="interpolate-14" class="solution-code d-none">time &lt;- seq(1,11,by=1)
-
-plot(time,cattle[1,2:12],type='l',ylim=c(200,max(cattle)+10),xlab='Time',ylab='Weight(KG)',
-     main='Both groups Cattle data')
-
-for(i in 2:nrow(cattle))
-{
-  lines(time,cattle[i,2:12])
-}</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-15-1"><a href="#interpolate-15-1" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">11</span>,<span class="at">by=</span><span class="dv">1</span>)</span>
-<span id="interpolate-15-2"><a href="#interpolate-15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-15-3"><a href="#interpolate-15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(time,cattle[<span class="dv">1</span>,<span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>],<span class="at">type=</span><span class="st">'l'</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">200</span>,<span class="fu">max</span>(cattle)<span class="sc">+</span><span class="dv">10</span>),<span class="at">xlab=</span><span class="st">'Time'</span>,<span class="at">ylab=</span><span class="st">'Weight(KG)'</span>,</span>
-<span id="interpolate-15-4"><a href="#interpolate-15-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">'Both groups Cattle data'</span>)</span>
-<span id="interpolate-15-5"><a href="#interpolate-15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-15-6"><a href="#interpolate-15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(cattle))</span>
-<span id="interpolate-15-7"><a href="#interpolate-15-7" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="interpolate-15-8"><a href="#interpolate-15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(time,cattle[i,<span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>])</span>
-<span id="interpolate-15-9"><a href="#interpolate-15-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-14" class="solution-code d-none">time &lt;- 1:11
+matplot(time, t(cattle[, -1]), type = "l", lty = 1, col = "grey40",
+        xlab = "Time", ylab = "Weight (kg)", main = "All 60 animals")</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-15-1"><a href="#interpolate-15-1" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">11</span></span>
+<span id="interpolate-15-2"><a href="#interpolate-15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">matplot</span>(time, <span class="fu">t</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>]), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"grey40"</span>,</span>
+<span id="interpolate-15-3"><a href="#interpolate-15-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Time"</span>, <span class="at">ylab =</span> <span class="st">"Weight (kg)"</span>, <span class="at">main =</span> <span class="st">"All 60 animals"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>Then the Spaghetti plot for different groups</p>
+<p>Each line is one animal. Two things are worth noticing. Weight increases steadily for everyone, so there is a clear time trend. And the lines stay roughly parallel: animals that start heavy stay heavy. That persistent ordering <em>is</em> the within-subject correlation, and it is why treating these 660 measurements as independent would be wrong.</p>
 <ol start="3" type="1">
 <li>Calculate the sample means for observations at each time point. Additionally, compute the sample covariance matrix and sample correlation matrix.</li>
 </ol>
@@ -591,26 +578,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA0In0sImNvZGUiOiIj
 </div>
 <div class="cell" data-exercise="q04" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q04">
-<code id="interpolate-20" class="solution-code d-none"># Compute the sample means at each time point
-m.timepoint &lt;- sapply(cattle[, -1], mean) # Exclude the first column (group information)
-m.timepoint
-
-# Calculate the sample covariance matrix
-cov(cattle[, -1]) # Exclude the first column
-
-# Calculate the sample correlation matrix
-cor(cattle[, -1]) # Exclude the first column</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-21-1"><a href="#interpolate-21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the sample means at each time point</span></span>
-<span id="interpolate-21-2"><a href="#interpolate-21-2" aria-hidden="true" tabindex="-1"></a>m.timepoint <span class="ot">&lt;-</span> <span class="fu">sapply</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>], mean) <span class="co"># Exclude the first column (group information)</span></span>
-<span id="interpolate-21-3"><a href="#interpolate-21-3" aria-hidden="true" tabindex="-1"></a>m.timepoint</span>
-<span id="interpolate-21-4"><a href="#interpolate-21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-21-5"><a href="#interpolate-21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the sample covariance matrix</span></span>
-<span id="interpolate-21-6"><a href="#interpolate-21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>]) <span class="co"># Exclude the first column</span></span>
-<span id="interpolate-21-7"><a href="#interpolate-21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-21-8"><a href="#interpolate-21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the sample correlation matrix</span></span>
-<span id="interpolate-21-9"><a href="#interpolate-21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>]) <span class="co"># Exclude the first column</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-20" class="solution-code d-none">means &lt;- colMeans(cattle[, -1])
+round(means, 1)
+round(cor(cattle[, -1]), 2)</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-21-1"><a href="#interpolate-21-1" aria-hidden="true" tabindex="-1"></a>means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="interpolate-21-2"><a href="#interpolate-21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(means, <span class="dv">1</span>)</span>
+<span id="interpolate-21-3"><a href="#interpolate-21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>]), <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<p>The means rise steadily with time, as the plot suggested.</p>
+<p>In the correlation matrix, read along any row. Correlation is high next to the diagonal — adjacent times are near 0.9 — and falls away as the gap widens, down to around 0.5 between the first and last times. That decay with lag is the pattern AR(1) is built for, and it is why compound symmetry, which forces every pair to share one correlation, would fit these data badly.</p>
 <ol start="4" type="1">
 <li>Create a pairwise scatter plot for the cattle data. Analyse and describe the key features of the observed correlations.</li>
 </ol>
@@ -634,11 +611,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA1In0sImNvZGUiOiJf
 </div>
 <div class="cell" data-exercise="q05" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q05">
-<code id="interpolate-26" class="solution-code d-none">pairs(cattle[, -1], main='All Cattle Data')</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-27-1"><a href="#interpolate-27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">main=</span><span class="st">'All Cattle Data'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-26" class="solution-code d-none">pairs(cattle[, c(2, 3, 7, 12)], main = "Weights at times 1, 2, 6 and 11")</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-27-1"><a href="#interpolate-27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(cattle[, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">12</span>)], <span class="at">main =</span> <span class="st">"Weights at times 1, 2, 6 and 11"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>There is linear correlation overall, which reduces for increasing lag. The lag-<span class="math inline">\(1\)</span> linear correlation is very strong, so cattle weight measurements between successive time points exhibit strong linear correlation.</p>
+<p>Four times are shown rather than all eleven, because an 11 by 11 grid of panels is unreadable. The panels for adjacent times are tight, near-linear clouds; those for widely separated times are much more diffuse. This is the same information as the correlation matrix, seen directly.</p>
 <ol start="5" type="1">
 <li>Divide the cattle dataset into two groups, Group A and Group B. For each group, determine the sample means at each time point, as well as the sample covariance and sample correlation.</li>
 </ol>
@@ -661,102 +638,15 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA2In0sImNvZGUiOiJh
 </div>
 <div class="cell" data-exercise="q06" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q06">
-<code id="interpolate-32" class="solution-code d-none"># Separate cattle data into groups
-a.cattle &lt;- cattle[which(cattle[, 1] == 0), 2:12]
-b.cattle &lt;- cattle[which(cattle[, 1] == 1), 2:12]
-
-# Set up a layout for the plots
-oldpar &lt;- par(no.readonly=TRUE)
-par(mfcol=c(1, 2))
-
-# Group A Cattle Data Plot
-plot(
-  time, a.cattle[1,],
-  type='l', ylim=c(200, max(cattle) + 10),
-  xlab='Time', ylab='Weight (KG)',
-  main='Group A Cattle Data'
-)
-
-# Add lines for each row (cattle) in Group A
-for (i in 1:nrow(a.cattle)) {
-  lines(time, a.cattle[i,])
-}
-
-# Group B Cattle Data Plot
-plot(
-  time, b.cattle[1,],
-  type='l', ylim=c(200, max(cattle) + 10),
-  xlab='Time', ylab='Weight (KG)',
-  main='Group B Cattle Data'
-)
-
-# Add lines for each row (cattle) in Group B
-for (i in 1:nrow(b.cattle)) {
-  lines(time, b.cattle[i,])
-}
-
-par(oldpar)
-
-# Calculate sample statistics for Group A
-am.timepoint &lt;- sapply(a.cattle, mean)
-am.timepoint
-cov(a.cattle)
-cor(a.cattle)
-
-# Calculate sample statistics for Group B
-bm.timepoint &lt;- sapply(b.cattle, mean)
-bm.timepoint
-cov(b.cattle)
-cor(b.cattle)</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-33-1"><a href="#interpolate-33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate cattle data into groups</span></span>
-<span id="interpolate-33-2"><a href="#interpolate-33-2" aria-hidden="true" tabindex="-1"></a>a.cattle <span class="ot">&lt;-</span> cattle[<span class="fu">which</span>(cattle[, <span class="dv">1</span>] <span class="sc">==</span> <span class="dv">0</span>), <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>]</span>
-<span id="interpolate-33-3"><a href="#interpolate-33-3" aria-hidden="true" tabindex="-1"></a>b.cattle <span class="ot">&lt;-</span> cattle[<span class="fu">which</span>(cattle[, <span class="dv">1</span>] <span class="sc">==</span> <span class="dv">1</span>), <span class="dv">2</span><span class="sc">:</span><span class="dv">12</span>]</span>
-<span id="interpolate-33-4"><a href="#interpolate-33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-5"><a href="#interpolate-33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up a layout for the plots</span></span>
-<span id="interpolate-33-6"><a href="#interpolate-33-6" aria-hidden="true" tabindex="-1"></a>oldpar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">no.readonly=</span><span class="cn">TRUE</span>)</span>
-<span id="interpolate-33-7"><a href="#interpolate-33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfcol=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="interpolate-33-8"><a href="#interpolate-33-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-9"><a href="#interpolate-33-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Group A Cattle Data Plot</span></span>
-<span id="interpolate-33-10"><a href="#interpolate-33-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="interpolate-33-11"><a href="#interpolate-33-11" aria-hidden="true" tabindex="-1"></a>  time, a.cattle[<span class="dv">1</span>,],</span>
-<span id="interpolate-33-12"><a href="#interpolate-33-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">type=</span><span class="st">'l'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="fu">max</span>(cattle) <span class="sc">+</span> <span class="dv">10</span>),</span>
-<span id="interpolate-33-13"><a href="#interpolate-33-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab=</span><span class="st">'Time'</span>, <span class="at">ylab=</span><span class="st">'Weight (KG)'</span>,</span>
-<span id="interpolate-33-14"><a href="#interpolate-33-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">main=</span><span class="st">'Group A Cattle Data'</span></span>
-<span id="interpolate-33-15"><a href="#interpolate-33-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="interpolate-33-16"><a href="#interpolate-33-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-17"><a href="#interpolate-33-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Add lines for each row (cattle) in Group A</span></span>
-<span id="interpolate-33-18"><a href="#interpolate-33-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(a.cattle)) {</span>
-<span id="interpolate-33-19"><a href="#interpolate-33-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(time, a.cattle[i,])</span>
-<span id="interpolate-33-20"><a href="#interpolate-33-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="interpolate-33-21"><a href="#interpolate-33-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-22"><a href="#interpolate-33-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Group B Cattle Data Plot</span></span>
-<span id="interpolate-33-23"><a href="#interpolate-33-23" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="interpolate-33-24"><a href="#interpolate-33-24" aria-hidden="true" tabindex="-1"></a>  time, b.cattle[<span class="dv">1</span>,],</span>
-<span id="interpolate-33-25"><a href="#interpolate-33-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">type=</span><span class="st">'l'</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="fu">max</span>(cattle) <span class="sc">+</span> <span class="dv">10</span>),</span>
-<span id="interpolate-33-26"><a href="#interpolate-33-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab=</span><span class="st">'Time'</span>, <span class="at">ylab=</span><span class="st">'Weight (KG)'</span>,</span>
-<span id="interpolate-33-27"><a href="#interpolate-33-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">main=</span><span class="st">'Group B Cattle Data'</span></span>
-<span id="interpolate-33-28"><a href="#interpolate-33-28" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="interpolate-33-29"><a href="#interpolate-33-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-30"><a href="#interpolate-33-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Add lines for each row (cattle) in Group B</span></span>
-<span id="interpolate-33-31"><a href="#interpolate-33-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(b.cattle)) {</span>
-<span id="interpolate-33-32"><a href="#interpolate-33-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(time, b.cattle[i,])</span>
-<span id="interpolate-33-33"><a href="#interpolate-33-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="interpolate-33-34"><a href="#interpolate-33-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-35"><a href="#interpolate-33-35" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(oldpar)</span>
-<span id="interpolate-33-36"><a href="#interpolate-33-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-37"><a href="#interpolate-33-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate sample statistics for Group A</span></span>
-<span id="interpolate-33-38"><a href="#interpolate-33-38" aria-hidden="true" tabindex="-1"></a>am.timepoint <span class="ot">&lt;-</span> <span class="fu">sapply</span>(a.cattle, mean)</span>
-<span id="interpolate-33-39"><a href="#interpolate-33-39" aria-hidden="true" tabindex="-1"></a>am.timepoint</span>
-<span id="interpolate-33-40"><a href="#interpolate-33-40" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(a.cattle)</span>
-<span id="interpolate-33-41"><a href="#interpolate-33-41" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(a.cattle)</span>
-<span id="interpolate-33-42"><a href="#interpolate-33-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-33-43"><a href="#interpolate-33-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate sample statistics for Group B</span></span>
-<span id="interpolate-33-44"><a href="#interpolate-33-44" aria-hidden="true" tabindex="-1"></a>bm.timepoint <span class="ot">&lt;-</span> <span class="fu">sapply</span>(b.cattle, mean)</span>
-<span id="interpolate-33-45"><a href="#interpolate-33-45" aria-hidden="true" tabindex="-1"></a>bm.timepoint</span>
-<span id="interpolate-33-46"><a href="#interpolate-33-46" aria-hidden="true" tabindex="-1"></a><span class="fu">cov</span>(b.cattle)</span>
-<span id="interpolate-33-47"><a href="#interpolate-33-47" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(b.cattle)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-32" class="solution-code d-none">A &lt;- cattle[cattle$group == 0, -1]
+B &lt;- cattle[cattle$group == 1, -1]
+rbind(A = colMeans(A), B = colMeans(B))</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-33-1"><a href="#interpolate-33-1" aria-hidden="true" tabindex="-1"></a>A <span class="ot">&lt;-</span> cattle[cattle<span class="sc">$</span>group <span class="sc">==</span> <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="interpolate-33-2"><a href="#interpolate-33-2" aria-hidden="true" tabindex="-1"></a>B <span class="ot">&lt;-</span> cattle[cattle<span class="sc">$</span>group <span class="sc">==</span> <span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="interpolate-33-3"><a href="#interpolate-33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(<span class="at">A =</span> <span class="fu">colMeans</span>(A), <span class="at">B =</span> <span class="fu">colMeans</span>(B))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<p>Group A starts heavier. By the last time point the two groups have converged and crossed over, so the difference between them is not constant — it changes with time. A model with only a group effect could not represent that; you need an interaction between group and time, which is what you fit in week 3.</p>
 <ol start="6" type="1">
 <li>Produce pairwise scatter plots for each group. Identify and discuss any similarities or differences between the two groups evident in the plots.</li>
 </ol>
@@ -778,13 +668,17 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA3In0sImNvZGUiOiJw
 </div>
 <div class="cell" data-exercise="q07" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q07">
-<code id="interpolate-38" class="solution-code d-none">pairs(a.cattle, main='Group A Cattle Data')
-pairs(b.cattle, main='Group B Cattle Data')</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-39-1"><a href="#interpolate-39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(a.cattle, <span class="at">main=</span><span class="st">'Group A Cattle Data'</span>)</span>
-<span id="interpolate-39-2"><a href="#interpolate-39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(b.cattle, <span class="at">main=</span><span class="st">'Group B Cattle Data'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-38" class="solution-code d-none">par(mfrow = c(1, 2))
+pairs(A[, c(1, 2, 6, 11)], main = "Group A")
+pairs(B[, c(1, 2, 6, 11)], main = "Group B")
+par(mfrow = c(1, 1))</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-39-1"><a href="#interpolate-39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="interpolate-39-2"><a href="#interpolate-39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(A[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">11</span>)], <span class="at">main =</span> <span class="st">"Group A"</span>)</span>
+<span id="interpolate-39-3"><a href="#interpolate-39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(B[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">11</span>)], <span class="at">main =</span> <span class="st">"Group B"</span>)</span>
+<span id="interpolate-39-4"><a href="#interpolate-39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>The scatter plots show similar correlation structure between the two groups. Group A exhibits slightly stronger linear correlation than group B overall.</p>
+<p>The correlation structure looks similar in both groups: the same tightening near the diagonal and loosening away from it. That matters for modelling, because it means one covariance structure can reasonably be assumed to hold for both groups rather than fitting each separately.</p>
 <ol start="7" type="1">
 <li>Plot the sample means of both groups against time within a single figure. Provide your interpretations and conclusions drawn from the figure.</li>
 </ol>
@@ -807,21 +701,19 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA4In0sImNvZGUiOiJw
 </div>
 <div class="cell" data-exercise="q08" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q08">
-<code id="interpolate-44" class="solution-code d-none"># Plot the sample means of both groups over time
-plot(
-  time, am.timepoint, type='l', ylab='Mean Weight (KG)', lwd=2,
-  main='Mean Weight (KG) - Group A (Black) and Group B (Red)'
-)
-lines(time, bm.timepoint, col=2, lwd=2) # Use color red for Group B</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-45-1"><a href="#interpolate-45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the sample means of both groups over time</span></span>
-<span id="interpolate-45-2"><a href="#interpolate-45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
-<span id="interpolate-45-3"><a href="#interpolate-45-3" aria-hidden="true" tabindex="-1"></a>  time, am.timepoint, <span class="at">type=</span><span class="st">'l'</span>, <span class="at">ylab=</span><span class="st">'Mean Weight (KG)'</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
-<span id="interpolate-45-4"><a href="#interpolate-45-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">main=</span><span class="st">'Mean Weight (KG) - Group A (Black) and Group B (Red)'</span></span>
-<span id="interpolate-45-5"><a href="#interpolate-45-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="interpolate-45-6"><a href="#interpolate-45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(time, bm.timepoint, <span class="at">col=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>) <span class="co"># Use color red for Group B</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-44" class="solution-code d-none">plot(time, colMeans(A), type = "b", pch = 16, ylim = range(cattle[, -1]),
+     xlab = "Time", ylab = "Mean weight (kg)")
+lines(time, colMeans(B), type = "b", pch = 17, col = "red")
+legend("topleft", c("Group A", "Group B"), pch = c(16, 17),
+       col = c("black", "red"), bty = "n")</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-45-1"><a href="#interpolate-45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(time, <span class="fu">colMeans</span>(A), <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">ylim =</span> <span class="fu">range</span>(cattle[, <span class="sc">-</span><span class="dv">1</span>]),</span>
+<span id="interpolate-45-2"><a href="#interpolate-45-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>, <span class="at">ylab =</span> <span class="st">"Mean weight (kg)"</span>)</span>
+<span id="interpolate-45-3"><a href="#interpolate-45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(time, <span class="fu">colMeans</span>(B), <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">17</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="interpolate-45-4"><a href="#interpolate-45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="fu">c</span>(<span class="st">"Group A"</span>, <span class="st">"Group B"</span>), <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>),</span>
+<span id="interpolate-45-5"><a href="#interpolate-45-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>), <span class="at">bty =</span> <span class="st">"n"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>The sample means for the two groups are similar, thus having strong linear correlation. The mean weight of group A is initially higher than the mean weight of group B. However, the mean weight of group A starts to decrease after time 4, while the mean weight of group B remains relatively constant. By time 10, the mean weight of group B is higher than the mean weight of group A.</p>
+<p>The two mean curves cross. Group A is heavier at first, its growth flattens after about time 4, and group B overtakes it. This crossing is the treatment effect, and it is a difference in <em>slope</em> rather than in level.</p>
 <p>Q2 You will work with longitudinal data on lung function growth in school-age girls from Topeka, Kansas, as part of the Six Cities Study of Air Pollution and Health. The dataset contains repeated pulmonary function measurements from 299 girls, typically enrolled around ages 6-10 and followed annually until high school graduation or loss to follow-up. The number of observations per individual ranges from 1 to 12, making the dataset unbalanced with respect to age.</p>
 <p>At each visit, lung function was measured using simple spirometry, and the outcome of interest is the logarithm of the ratio of forced expiratory volume in 1 second (FEV1) to height, i.e., log(FEV1/height).</p>
 <p>The dataset is available in the course package.</p>
@@ -857,39 +749,15 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTEwIn0sImNvZGUiOiJk
 </div>
 <div class="cell" data-exercise="q10" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q10">
-<code id="interpolate-50" class="solution-code d-none">require(tidyverse)
-require(ggplot2)
-data &lt;- fev1
-# View structure and a quick summary
-str(data)
-summary(data)
-
-# Number of observations (rows)
-n_obs &lt;- nrow(data)
-
-# Number of unique individuals
-n_individuals &lt;- n_distinct(data$id)
-
-cat("Total observations:", n_obs, "\n")
-cat("Total individuals:", n_individuals, "\n")</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-51-1"><a href="#interpolate-51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span>
-<span id="interpolate-51-2"><a href="#interpolate-51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggplot2)</span>
-<span id="interpolate-51-3"><a href="#interpolate-51-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> fev1</span>
-<span id="interpolate-51-4"><a href="#interpolate-51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View structure and a quick summary</span></span>
-<span id="interpolate-51-5"><a href="#interpolate-51-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span>
-<span id="interpolate-51-6"><a href="#interpolate-51-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span>
-<span id="interpolate-51-7"><a href="#interpolate-51-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-51-8"><a href="#interpolate-51-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of observations (rows)</span></span>
-<span id="interpolate-51-9"><a href="#interpolate-51-9" aria-hidden="true" tabindex="-1"></a>n_obs <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="interpolate-51-10"><a href="#interpolate-51-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-51-11"><a href="#interpolate-51-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of unique individuals</span></span>
-<span id="interpolate-51-12"><a href="#interpolate-51-12" aria-hidden="true" tabindex="-1"></a>n_individuals <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(data<span class="sc">$</span>id)</span>
-<span id="interpolate-51-13"><a href="#interpolate-51-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-51-14"><a href="#interpolate-51-14" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total observations:"</span>, n_obs, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="interpolate-51-15"><a href="#interpolate-51-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Total individuals:"</span>, n_individuals, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-50" class="solution-code d-none">data(fev1)
+nrow(fev1)                 # observations
+length(unique(fev1$id))    # girls</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-51-1"><a href="#interpolate-51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(fev1)</span>
+<span id="interpolate-51-2"><a href="#interpolate-51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(fev1)                 <span class="co"># observations</span></span>
+<span id="interpolate-51-3"><a href="#interpolate-51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(fev1<span class="sc">$</span>id))    <span class="co"># girls</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>This step confirms that we’re working with a longitudinal dataset, each girl contributes multiple measurements over time. However, the number of measurements varies per individual, which means the data is unbalanced.</p>
+<p>1993 observations from 299 girls — about 6.7 visits each on average, but that average conceals a lot, as the next item shows.</p>
 <ol start="2" type="1">
 <li>Summarise the number of observations per individual. What does this tell you about the balance of the data?</li>
 </ol>
@@ -912,39 +780,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTExIn0sImNvZGUiOiJj
 </div>
 <div class="cell" data-exercise="q11" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q11">
-<code id="interpolate-56" class="solution-code d-none"># Count observations per individual
-obs_per_individual &lt;- data %&gt;%
-  count(id)
-
-# Summary statistics
-summary(obs_per_individual$n)
-
-# Plot a histogram
-ggplot(obs_per_individual, aes(x = n)) +
-  geom_histogram(binwidth = 1, fill = "skyblue", color = "black") +
-  labs(
-    title = "Distribution of Number of Observations per Individual",
-    x = "Number of Observations",
-    y = "Count of Individuals"
-  )</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-57-1"><a href="#interpolate-57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count observations per individual</span></span>
-<span id="interpolate-57-2"><a href="#interpolate-57-2" aria-hidden="true" tabindex="-1"></a>obs_per_individual <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="interpolate-57-3"><a href="#interpolate-57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(id)</span>
-<span id="interpolate-57-4"><a href="#interpolate-57-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-57-5"><a href="#interpolate-57-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary statistics</span></span>
-<span id="interpolate-57-6"><a href="#interpolate-57-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(obs_per_individual<span class="sc">$</span>n)</span>
-<span id="interpolate-57-7"><a href="#interpolate-57-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-57-8"><a href="#interpolate-57-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot a histogram</span></span>
-<span id="interpolate-57-9"><a href="#interpolate-57-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(obs_per_individual, <span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span></span>
-<span id="interpolate-57-10"><a href="#interpolate-57-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="interpolate-57-11"><a href="#interpolate-57-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="interpolate-57-12"><a href="#interpolate-57-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Number of Observations per Individual"</span>,</span>
-<span id="interpolate-57-13"><a href="#interpolate-57-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Number of Observations"</span>,</span>
-<span id="interpolate-57-14"><a href="#interpolate-57-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count of Individuals"</span></span>
-<span id="interpolate-57-15"><a href="#interpolate-57-15" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-56" class="solution-code d-none">per_girl &lt;- table(fev1$id)
+summary(as.numeric(per_girl))
+hist(as.numeric(per_girl), breaks = 0:12, xlab = "Visits per girl", main = "")</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-57-1"><a href="#interpolate-57-1" aria-hidden="true" tabindex="-1"></a>per_girl <span class="ot">&lt;-</span> <span class="fu">table</span>(fev1<span class="sc">$</span>id)</span>
+<span id="interpolate-57-2"><a href="#interpolate-57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">as.numeric</span>(per_girl))</span>
+<span id="interpolate-57-3"><a href="#interpolate-57-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">as.numeric</span>(per_girl), <span class="at">breaks =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">xlab =</span> <span class="st">"Visits per girl"</span>, <span class="at">main =</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>The histogram shows a right-skewed distribution, meaning most girls have moderate to high follow-up, but a few have very few observations (e.g., just 1–2).</p>
+<p>The distribution is right-skewed. Most girls have several visits, but some have only one or two. So the data are <strong>unbalanced</strong>: <span class="math inline">\(n_i\)</span> differs between girls.</p>
+<p>This is not a defect and does not need fixing. It does have two consequences. The design matrices differ in size between girls, so the model has to be written per subject. And a girl with two visits carries far less information than one with twelve, which is exactly what produces shrinkage in the week 3 predictions.</p>
 <ol start="3" type="1">
 <li>Produce a plot of log(fev1 / height) against age for 50 randomly selected girls. Connect points for the same individual. Comment on the variability between individuals and the measurement patterns over age.</li>
 </ol>
@@ -968,45 +813,28 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTEyIn0sImNvZGUiOiJz
 </div>
 <div class="cell" data-exercise="q12" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q12">
-<code id="interpolate-62" class="solution-code d-none"># Sample 50 random individuals
-set.seed(123)  # for reproducibility
-sample_ids &lt;- sample(unique(data$id), 50)
-
-data_sample &lt;- data %&gt;%
-  filter(id %in% sample_ids)
-
-# Plot
-ggplot(data_sample, aes(x = age, y = logfev1_ht, group = id, color = factor(id))) +
-  geom_line(alpha = 0.7) +
-  labs(
-    title = "log(FEV1 / height) vs Age for 50 Randomly Selected Girls",
-    x = "Age (years)",
-    y = "log(FEV1 / height)",
-    color = "Individual ID"
-  ) +
-  theme_minimal() +
-  theme(legend.position = "none")</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-63-1"><a href="#interpolate-63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample 50 random individuals</span></span>
-<span id="interpolate-63-2"><a href="#interpolate-63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span></span>
-<span id="interpolate-63-3"><a href="#interpolate-63-3" aria-hidden="true" tabindex="-1"></a>sample_ids <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">unique</span>(data<span class="sc">$</span>id), <span class="dv">50</span>)</span>
-<span id="interpolate-63-4"><a href="#interpolate-63-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-63-5"><a href="#interpolate-63-5" aria-hidden="true" tabindex="-1"></a>data_sample <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="interpolate-63-6"><a href="#interpolate-63-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> sample_ids)</span>
-<span id="interpolate-63-7"><a href="#interpolate-63-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-63-8"><a href="#interpolate-63-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="interpolate-63-9"><a href="#interpolate-63-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data_sample, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> logfev1_ht, <span class="at">group =</span> id, <span class="at">color =</span> <span class="fu">factor</span>(id))) <span class="sc">+</span></span>
-<span id="interpolate-63-10"><a href="#interpolate-63-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="interpolate-63-11"><a href="#interpolate-63-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="interpolate-63-12"><a href="#interpolate-63-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"log(FEV1 / height) vs Age for 50 Randomly Selected Girls"</span>,</span>
-<span id="interpolate-63-13"><a href="#interpolate-63-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Age (years)"</span>,</span>
-<span id="interpolate-63-14"><a href="#interpolate-63-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"log(FEV1 / height)"</span>,</span>
-<span id="interpolate-63-15"><a href="#interpolate-63-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Individual ID"</span></span>
-<span id="interpolate-63-16"><a href="#interpolate-63-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="interpolate-63-17"><a href="#interpolate-63-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="interpolate-63-18"><a href="#interpolate-63-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-62" class="solution-code d-none">set.seed(123)
+ids &lt;- sample(unique(fev1$id), 50)
+sub &lt;- fev1[fev1$id %in% ids, ]
+plot(sub$age, sub$logfev1_ht, type = "n",
+     xlab = "Age (years)", ylab = "log(FEV1 / height)")
+for (i in ids) {
+  g &lt;- sub[sub$id == i, ]
+  lines(g$age[order(g$age)], g$logfev1_ht[order(g$age)], col = "grey50")
+}</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-63-1"><a href="#interpolate-63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="interpolate-63-2"><a href="#interpolate-63-2" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">unique</span>(fev1<span class="sc">$</span>id), <span class="dv">50</span>)</span>
+<span id="interpolate-63-3"><a href="#interpolate-63-3" aria-hidden="true" tabindex="-1"></a>sub <span class="ot">&lt;-</span> fev1[fev1<span class="sc">$</span>id <span class="sc">%in%</span> ids, ]</span>
+<span id="interpolate-63-4"><a href="#interpolate-63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sub<span class="sc">$</span>age, sub<span class="sc">$</span>logfev1_ht, <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="interpolate-63-5"><a href="#interpolate-63-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Age (years)"</span>, <span class="at">ylab =</span> <span class="st">"log(FEV1 / height)"</span>)</span>
+<span id="interpolate-63-6"><a href="#interpolate-63-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> ids) {</span>
+<span id="interpolate-63-7"><a href="#interpolate-63-7" aria-hidden="true" tabindex="-1"></a>  g <span class="ot">&lt;-</span> sub[sub<span class="sc">$</span>id <span class="sc">==</span> i, ]</span>
+<span id="interpolate-63-8"><a href="#interpolate-63-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(g<span class="sc">$</span>age[<span class="fu">order</span>(g<span class="sc">$</span>age)], g<span class="sc">$</span>logfev1_ht[<span class="fu">order</span>(g<span class="sc">$</span>age)], <span class="at">col =</span> <span class="st">"grey50"</span>)</span>
+<span id="interpolate-63-9"><a href="#interpolate-63-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>This plot is a classic spaghetti plot used in longitudinal analysis. There is substantial between-person variability, some girls show steep increases, others plateau. Measurement times are irregular, highlighting the unbalanced design. Some trajectories are short, these are girls with only a few data points.</p>
+<p>The spaghetti plot for the unbalanced case. Compared with the cattle data, notice that the lines start and stop at different ages and have different numbers of points — that is the imbalance made visible.</p>
+<p>There is substantial variation between girls in both level and slope, which is the motivation for allowing a random intercept <em>and</em> a random slope in week 2.</p>
 <ol start="4" type="1">
 <li>Compute and plot the average log(fev1 / height) at each age, aggregating across individuals.</li>
 </ol>
@@ -1030,41 +858,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTEzIn0sImNvZGUiOiJt
 </div>
 <div class="cell" data-exercise="q13" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q13">
-<code id="interpolate-68" class="solution-code d-none"># Group by age and compute mean logfev1/ht
-mean_by_age &lt;- data %&gt;%
-  group_by(age) %&gt;%
-  summarise(mean_logfev1_ht = mean(logfev1_ht, na.rm = TRUE),
-            n = n())
-
-# Plot
-ggplot(mean_by_age, aes(x = age, y = mean_logfev1_ht)) +
-  geom_point(color = "darkred") +
-  # geom_line(color = "darkred") +
-  labs(
-    title = "Average log(FEV1 / height) vs Age",
-    x = "Age (years)",
-    y = "Mean log(FEV1 / height)"
-  ) +
-  theme_minimal()</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-69-1"><a href="#interpolate-69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by age and compute mean logfev1/ht</span></span>
-<span id="interpolate-69-2"><a href="#interpolate-69-2" aria-hidden="true" tabindex="-1"></a>mean_by_age <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="interpolate-69-3"><a href="#interpolate-69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(age) <span class="sc">%&gt;%</span></span>
-<span id="interpolate-69-4"><a href="#interpolate-69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_logfev1_ht =</span> <span class="fu">mean</span>(logfev1_ht, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="interpolate-69-5"><a href="#interpolate-69-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> <span class="fu">n</span>())</span>
-<span id="interpolate-69-6"><a href="#interpolate-69-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-69-7"><a href="#interpolate-69-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="interpolate-69-8"><a href="#interpolate-69-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mean_by_age, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> mean_logfev1_ht)) <span class="sc">+</span></span>
-<span id="interpolate-69-9"><a href="#interpolate-69-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"darkred"</span>) <span class="sc">+</span></span>
-<span id="interpolate-69-10"><a href="#interpolate-69-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_line(color = "darkred") +</span></span>
-<span id="interpolate-69-11"><a href="#interpolate-69-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="interpolate-69-12"><a href="#interpolate-69-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Average log(FEV1 / height) vs Age"</span>,</span>
-<span id="interpolate-69-13"><a href="#interpolate-69-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Age (years)"</span>,</span>
-<span id="interpolate-69-14"><a href="#interpolate-69-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Mean log(FEV1 / height)"</span></span>
-<span id="interpolate-69-15"><a href="#interpolate-69-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="interpolate-69-16"><a href="#interpolate-69-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-68" class="solution-code d-none">by_age &lt;- aggregate(logfev1_ht ~ round(age), data = fev1, FUN = mean)
+names(by_age) &lt;- c("age", "mean_logfev1_ht")
+plot(by_age, pch = 16, xlab = "Age (years)", ylab = "Mean log(FEV1 / height)")</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-69-1"><a href="#interpolate-69-1" aria-hidden="true" tabindex="-1"></a>by_age <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(logfev1_ht <span class="sc">~</span> <span class="fu">round</span>(age), <span class="at">data =</span> fev1, <span class="at">FUN =</span> mean)</span>
+<span id="interpolate-69-2"><a href="#interpolate-69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(by_age) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"mean_logfev1_ht"</span>)</span>
+<span id="interpolate-69-3"><a href="#interpolate-69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(by_age, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">xlab =</span> <span class="st">"Age (years)"</span>, <span class="at">ylab =</span> <span class="st">"Mean log(FEV1 / height)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>This gives us a population-level view of lung function growth over age. The plot shows a gradual increase in lung function (adjusted for height), which is expected during adolescence. However, since age is a continuous variable and girls were not all measured at the same ages, the data is sparse at some ages, causing potential noise in the mean trend. A smoothed line (e.g., LOESS or spline) could help to further clarify the trend.</p>
+<p>Averaging within each age gives the population-level growth curve, which rises steadily through adolescence.</p>
+<p>Ages were rounded before averaging because girls were not measured on a common grid; without rounding, most ages would be supported by a single girl. Even so the extremes are based on few observations, so treat the ends of the curve with caution.</p>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week01">
 <section id="week-1-complete" class="level2">
 <h2 class="anchored" data-anchor-id="week-1-complete">Week 1 complete</h2>

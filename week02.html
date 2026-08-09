@@ -486,7 +486,7 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOnRydWV9LCJjb2RlIjoiLmxz
 
 </div>
 <script type="webr-3-contents">
-eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6ImxpYnJhcnkobHNkYSlcbmRhdGEoZmV2MSkifQ==
+eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6ImxpYnJhcnkobHNkYSlcbmRhdGEoZmV2MSwgcGFja2FnZSA9IFwibHNkYVwiKSJ9
 </script>
 </div>
 </div>
@@ -540,69 +540,34 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTAzIn0sImNvZGUiOiJs
 <div class="cell" data-exercise="q03" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q03">
 <code id="interpolate-8" class="solution-code d-none">library(nlme)
-library(tidyverse)
-data &lt;- fev1
-data.grouped &lt;- groupedData(logfev1_ht~age| id, data=data, FUN=mean)
-# Independent (Ri): no correlation between residuals
-fit_ind &lt;- lme(logfev1_ht ~ age, 
-               random = ~ 1 | id,
-               correlation = NULL, 
-               data = data.grouped, 
-               method = "ML")
+dg &lt;- groupedData(logfev1_ht ~ age | id, data = fev1)
 
-# Compound Symmetry (Ri): equal correlation (exchangeable)
-fit_cs &lt;- lme(logfev1_ht ~ age, 
-              random = ~ 1 | id,
-              correlation = corCompSymm(form = ~ 1 | id), 
-              data = data.grouped, 
-              method = "ML")
+# Compare R_i structures with a random intercept only. Adding a random slope
+# here stops AR(1) and ARMA(1,1) converging -- see the explanation below.
+fit_ind    &lt;- lme(logfev1_ht ~ age, random = ~ 1 | id, data = dg, method = "ML")
+fit_cs     &lt;- update(fit_ind, correlation = corCompSymm(form = ~ 1 | id))
+fit_ar1    &lt;- update(fit_ind, correlation = corAR1(form = ~ 1 | id))
+fit_arma11 &lt;- update(fit_ind, correlation = corARMA(form = ~ 1 | id, p = 1, q = 1))
 
-# AR(1): autocorrelated residuals
-fit_ar1 &lt;- lme(logfev1_ht ~ age, 
-               random = ~ 1 | id,
-               correlation = corAR1(form = ~ 1 | id), 
-               data = data.grouped, 
-               method = "ML")
-
-# ARMA(1,1)
-fit_arma11 &lt;- lme(logfev1_ht ~ age, 
-                  random = ~ 1 | id,
-                  correlation = corARMA(p = 1, q = 1, form = ~ 1 | id), 
-                  data = data.grouped, 
-                  method = "ML")</code>
+round(fixef(fit_ind), 4)
+round(fixef(fit_ar1), 4)</code>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-9-1"><a href="#interpolate-9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nlme)</span>
-<span id="interpolate-9-2"><a href="#interpolate-9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="interpolate-9-3"><a href="#interpolate-9-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> fev1</span>
-<span id="interpolate-9-4"><a href="#interpolate-9-4" aria-hidden="true" tabindex="-1"></a>data.grouped <span class="ot">&lt;-</span> <span class="fu">groupedData</span>(logfev1_ht<span class="sc">~</span>age<span class="sc">|</span> id, <span class="at">data=</span>data, <span class="at">FUN=</span>mean)</span>
-<span id="interpolate-9-5"><a href="#interpolate-9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Independent (Ri): no correlation between residuals</span></span>
-<span id="interpolate-9-6"><a href="#interpolate-9-6" aria-hidden="true" tabindex="-1"></a>fit_ind <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, </span>
-<span id="interpolate-9-7"><a href="#interpolate-9-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id,</span>
-<span id="interpolate-9-8"><a href="#interpolate-9-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">correlation =</span> <span class="cn">NULL</span>, </span>
-<span id="interpolate-9-9"><a href="#interpolate-9-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> data.grouped, </span>
-<span id="interpolate-9-10"><a href="#interpolate-9-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="interpolate-9-11"><a href="#interpolate-9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-9-12"><a href="#interpolate-9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compound Symmetry (Ri): equal correlation (exchangeable)</span></span>
-<span id="interpolate-9-13"><a href="#interpolate-9-13" aria-hidden="true" tabindex="-1"></a>fit_cs <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, </span>
-<span id="interpolate-9-14"><a href="#interpolate-9-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id,</span>
-<span id="interpolate-9-15"><a href="#interpolate-9-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">correlation =</span> <span class="fu">corCompSymm</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id), </span>
-<span id="interpolate-9-16"><a href="#interpolate-9-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data.grouped, </span>
-<span id="interpolate-9-17"><a href="#interpolate-9-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="interpolate-9-18"><a href="#interpolate-9-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-9-19"><a href="#interpolate-9-19" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(1): autocorrelated residuals</span></span>
-<span id="interpolate-9-20"><a href="#interpolate-9-20" aria-hidden="true" tabindex="-1"></a>fit_ar1 <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, </span>
-<span id="interpolate-9-21"><a href="#interpolate-9-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id,</span>
-<span id="interpolate-9-22"><a href="#interpolate-9-22" aria-hidden="true" tabindex="-1"></a>               <span class="at">correlation =</span> <span class="fu">corAR1</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id), </span>
-<span id="interpolate-9-23"><a href="#interpolate-9-23" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> data.grouped, </span>
-<span id="interpolate-9-24"><a href="#interpolate-9-24" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="interpolate-9-25"><a href="#interpolate-9-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-9-26"><a href="#interpolate-9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ARMA(1,1)</span></span>
-<span id="interpolate-9-27"><a href="#interpolate-9-27" aria-hidden="true" tabindex="-1"></a>fit_arma11 <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, </span>
-<span id="interpolate-9-28"><a href="#interpolate-9-28" aria-hidden="true" tabindex="-1"></a>                  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id,</span>
-<span id="interpolate-9-29"><a href="#interpolate-9-29" aria-hidden="true" tabindex="-1"></a>                  <span class="at">correlation =</span> <span class="fu">corARMA</span>(<span class="at">p =</span> <span class="dv">1</span>, <span class="at">q =</span> <span class="dv">1</span>, <span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id), </span>
-<span id="interpolate-9-30"><a href="#interpolate-9-30" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> data.grouped, </span>
-<span id="interpolate-9-31"><a href="#interpolate-9-31" aria-hidden="true" tabindex="-1"></a>                  <span class="at">method =</span> <span class="st">"ML"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="interpolate-9-2"><a href="#interpolate-9-2" aria-hidden="true" tabindex="-1"></a>dg <span class="ot">&lt;-</span> <span class="fu">groupedData</span>(logfev1_ht <span class="sc">~</span> age <span class="sc">|</span> id, <span class="at">data =</span> fev1)</span>
+<span id="interpolate-9-3"><a href="#interpolate-9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-9-4"><a href="#interpolate-9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare R_i structures with a random intercept only. Adding a random slope</span></span>
+<span id="interpolate-9-5"><a href="#interpolate-9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># here stops AR(1) and ARMA(1,1) converging -- see the explanation below.</span></span>
+<span id="interpolate-9-6"><a href="#interpolate-9-6" aria-hidden="true" tabindex="-1"></a>fit_ind    <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id, <span class="at">data =</span> dg, <span class="at">method =</span> <span class="st">"ML"</span>)</span>
+<span id="interpolate-9-7"><a href="#interpolate-9-7" aria-hidden="true" tabindex="-1"></a>fit_cs     <span class="ot">&lt;-</span> <span class="fu">update</span>(fit_ind, <span class="at">correlation =</span> <span class="fu">corCompSymm</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id))</span>
+<span id="interpolate-9-8"><a href="#interpolate-9-8" aria-hidden="true" tabindex="-1"></a>fit_ar1    <span class="ot">&lt;-</span> <span class="fu">update</span>(fit_ind, <span class="at">correlation =</span> <span class="fu">corAR1</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id))</span>
+<span id="interpolate-9-9"><a href="#interpolate-9-9" aria-hidden="true" tabindex="-1"></a>fit_arma11 <span class="ot">&lt;-</span> <span class="fu">update</span>(fit_ind, <span class="at">correlation =</span> <span class="fu">corARMA</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id, <span class="at">p =</span> <span class="dv">1</span>, <span class="at">q =</span> <span class="dv">1</span>))</span>
+<span id="interpolate-9-10"><a href="#interpolate-9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-9-11"><a href="#interpolate-9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">fixef</span>(fit_ind), <span class="dv">4</span>)</span>
+<span id="interpolate-9-12"><a href="#interpolate-9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">fixef</span>(fit_ar1), <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<p>Four models differing only in <code>correlation</code>. <code>update()</code> avoids retyping the call, so the one thing that changes stays visible.</p>
+<p>The two sets of fixed effects printed at the end are almost identical. Changing the assumed error correlation barely moves the estimates; it moves the <em>standard errors</em>. That is the same lesson GEE makes explicit in week 5.</p>
+<p>One thing worth knowing, because it will bite you if you try it. The question specifies a random intercept <strong>and</strong> a random slope, but fitting <code>random = ~ age | id</code> together with <code>corAR1</code> or <code>corARMA</code> fails to converge on these data. That is not a bug in your code: a random slope already makes the marginal correlation change with the gap between visits, and AR(1) errors do the same thing, so the two compete to explain the same structure and the likelihood has no well-identified maximum. Comparing R_i structures with the simpler G, then choosing G afterwards, avoids the problem — which is exactly why the tutorial splits the selection into two stages.</p>
 <pre><code>2.1. independent covariance structure,\
 2.2. compound symmetry covariance structure,\
 2.3. AR(1) structure,\
@@ -627,13 +592,18 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA3In0sImNvZGUiOiJf
 </div>
 <div class="cell" data-exercise="q07" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q07">
-<code id="interpolate-14" class="solution-code d-none">AIC(fit_ind, fit_cs, fit_ar1, fit_arma11)
-BIC(fit_ind, fit_cs, fit_ar1, fit_arma11)</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-15-1"><a href="#interpolate-15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit_ind, fit_cs, fit_ar1, fit_arma11)</span>
-<span id="interpolate-15-2"><a href="#interpolate-15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">BIC</span>(fit_ind, fit_cs, fit_ar1, fit_arma11)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-14" class="solution-code d-none">round(data.frame(
+  AIC = c(AIC(fit_ind), AIC(fit_cs), AIC(fit_ar1), AIC(fit_arma11)),
+  BIC = c(BIC(fit_ind), BIC(fit_cs), BIC(fit_ar1), BIC(fit_arma11)),
+  row.names = c("independent", "compound symmetry", "AR(1)", "ARMA(1,1)")), 1)</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-15-1"><a href="#interpolate-15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">data.frame</span>(</span>
+<span id="interpolate-15-2"><a href="#interpolate-15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">AIC =</span> <span class="fu">c</span>(<span class="fu">AIC</span>(fit_ind), <span class="fu">AIC</span>(fit_cs), <span class="fu">AIC</span>(fit_ar1), <span class="fu">AIC</span>(fit_arma11)),</span>
+<span id="interpolate-15-3"><a href="#interpolate-15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">BIC =</span> <span class="fu">c</span>(<span class="fu">BIC</span>(fit_ind), <span class="fu">BIC</span>(fit_cs), <span class="fu">BIC</span>(fit_ar1), <span class="fu">BIC</span>(fit_arma11)),</span>
+<span id="interpolate-15-4"><a href="#interpolate-15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="st">"independent"</span>, <span class="st">"compound symmetry"</span>, <span class="st">"AR(1)"</span>, <span class="st">"ARMA(1,1)"</span>)), <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>The AR(1) model has the lowest AIC and BIC, meaning it best captures the within-individual correlation over time. AR(1) assumes that measurements closer in time are more strongly correlated, which is sensible for lung function data collected annually.</p>
+<p>Both criteria are shown because they can disagree. Here they do not: AR(1) wins decisively on each, by around 400 units of AIC over independence. A gap that large is not a close call.</p>
+<p>That result makes sense. The girls are measured roughly annually over several years, and residuals a year apart should be more alike than residuals five years apart. Compound symmetry, which forces every pair to share one correlation, scores no better than independence — it is the wrong shape for these data.</p>
 <ol start="3" type="1">
 <li>With the selected structure for <span class="math inline">\(\mathbf{R}_i\)</span>, select the best structure for <span class="math inline">\(\mathbf{G}\)</span> among the candidates below:<br>
 </li>
@@ -660,48 +630,33 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA4In0sImNvZGUiOiJm
 </div>
 <div class="cell" data-exercise="q08" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q08">
-<code id="interpolate-20" class="solution-code d-none"># G as independent (identity)
-fit_G_ind &lt;- lme(logfev1_ht ~ age, 
-                 random = pdIdent(~ age),
-                 correlation = corAR1(form = ~ 1 | id),
-                 data = data.grouped, 
-                 method = "ML")
+<code id="interpolate-20" class="solution-code d-none"># AR(1) won, so hold it fixed and vary G. The general structure needs a
+# different optimiser to converge here.
+ctrl &lt;- lmeControl(opt = "optim")
 
-# G as diagonal
-fit_G_diag &lt;- lme(logfev1_ht ~ age, 
-                  random = pdDiag(~ age),
+fit_G_ind  &lt;- lme(logfev1_ht ~ age, random = pdIdent(~ age),
                   correlation = corAR1(form = ~ 1 | id),
-                  data = data.grouped, 
-                  method = "ML")
+                  data = dg, method = "ML", control = ctrl)
+fit_G_diag &lt;- update(fit_G_ind, random = pdDiag(~ age))
+fit_G_gen  &lt;- update(fit_G_ind, random = ~ age | id)
 
-# G as general
-fit_G_gen &lt;- lme(logfev1_ht ~ age, 
-                 random = pdSymm(~ age),
-                 correlation = corAR1(form = ~ 1 | id),
-                 data = data.grouped, 
-                 method = "ML")</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-21-1"><a href="#interpolate-21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># G as independent (identity)</span></span>
-<span id="interpolate-21-2"><a href="#interpolate-21-2" aria-hidden="true" tabindex="-1"></a>fit_G_ind <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, </span>
-<span id="interpolate-21-3"><a href="#interpolate-21-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">random =</span> <span class="fu">pdIdent</span>(<span class="sc">~</span> age),</span>
-<span id="interpolate-21-4"><a href="#interpolate-21-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">correlation =</span> <span class="fu">corAR1</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="interpolate-21-5"><a href="#interpolate-21-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> data.grouped, </span>
-<span id="interpolate-21-6"><a href="#interpolate-21-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="interpolate-21-7"><a href="#interpolate-21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-21-8"><a href="#interpolate-21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># G as diagonal</span></span>
-<span id="interpolate-21-9"><a href="#interpolate-21-9" aria-hidden="true" tabindex="-1"></a>fit_G_diag <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, </span>
-<span id="interpolate-21-10"><a href="#interpolate-21-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">random =</span> <span class="fu">pdDiag</span>(<span class="sc">~</span> age),</span>
-<span id="interpolate-21-11"><a href="#interpolate-21-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">correlation =</span> <span class="fu">corAR1</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="interpolate-21-12"><a href="#interpolate-21-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> data.grouped, </span>
-<span id="interpolate-21-13"><a href="#interpolate-21-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">method =</span> <span class="st">"ML"</span>)</span>
-<span id="interpolate-21-14"><a href="#interpolate-21-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-21-15"><a href="#interpolate-21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># G as general</span></span>
-<span id="interpolate-21-16"><a href="#interpolate-21-16" aria-hidden="true" tabindex="-1"></a>fit_G_gen <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, </span>
-<span id="interpolate-21-17"><a href="#interpolate-21-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">random =</span> <span class="fu">pdSymm</span>(<span class="sc">~</span> age),</span>
-<span id="interpolate-21-18"><a href="#interpolate-21-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">correlation =</span> <span class="fu">corAR1</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
-<span id="interpolate-21-19"><a href="#interpolate-21-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> data.grouped, </span>
-<span id="interpolate-21-20"><a href="#interpolate-21-20" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"ML"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+VarCorr(fit_G_diag)</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-21-1"><a href="#interpolate-21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AR(1) won, so hold it fixed and vary G. The general structure needs a</span></span>
+<span id="interpolate-21-2"><a href="#interpolate-21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># different optimiser to converge here.</span></span>
+<span id="interpolate-21-3"><a href="#interpolate-21-3" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">lmeControl</span>(<span class="at">opt =</span> <span class="st">"optim"</span>)</span>
+<span id="interpolate-21-4"><a href="#interpolate-21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-21-5"><a href="#interpolate-21-5" aria-hidden="true" tabindex="-1"></a>fit_G_ind  <span class="ot">&lt;-</span> <span class="fu">lme</span>(logfev1_ht <span class="sc">~</span> age, <span class="at">random =</span> <span class="fu">pdIdent</span>(<span class="sc">~</span> age),</span>
+<span id="interpolate-21-6"><a href="#interpolate-21-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">correlation =</span> <span class="fu">corAR1</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> id),</span>
+<span id="interpolate-21-7"><a href="#interpolate-21-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> dg, <span class="at">method =</span> <span class="st">"ML"</span>, <span class="at">control =</span> ctrl)</span>
+<span id="interpolate-21-8"><a href="#interpolate-21-8" aria-hidden="true" tabindex="-1"></a>fit_G_diag <span class="ot">&lt;-</span> <span class="fu">update</span>(fit_G_ind, <span class="at">random =</span> <span class="fu">pdDiag</span>(<span class="sc">~</span> age))</span>
+<span id="interpolate-21-9"><a href="#interpolate-21-9" aria-hidden="true" tabindex="-1"></a>fit_G_gen  <span class="ot">&lt;-</span> <span class="fu">update</span>(fit_G_ind, <span class="at">random =</span> <span class="sc">~</span> age <span class="sc">|</span> id)</span>
+<span id="interpolate-21-10"><a href="#interpolate-21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-21-11"><a href="#interpolate-21-11" aria-hidden="true" tabindex="-1"></a><span class="fu">VarCorr</span>(fit_G_diag)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<p><code>correlation</code> is now fixed at AR(1) and <code>random</code> varies. The three G structures are nested: identity within diagonal within general.</p>
+<p>Note <code>control = lmeControl(opt = "optim")</code>. With the default optimiser the general structure does not converge; switching optimisers fixes it. If a mixed model fails to converge, changing the optimiser is worth trying before concluding the model is wrong — though if several optimisers fail, that is a genuine signal of over-parameterisation.</p>
+<p>In the printed variance components, <code>pdDiag</code> gives a standard deviation for the intercept and one for <code>age</code> but no correlation between them, because a diagonal G <em>assumes</em> that correlation is zero rather than estimating it.</p>
 <pre><code>3.1. independent covariance structure,\
 3.2. diagonal covariance structure,\
 3.3. general covariance structure.</code></pre>
@@ -723,13 +678,18 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTExIn0sImNvZGUiOiJB
 </div>
 <div class="cell" data-exercise="q11" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="q11">
-<code id="interpolate-26" class="solution-code d-none">AIC(fit_G_ind, fit_G_diag, fit_G_gen)
-BIC(fit_G_ind, fit_G_diag, fit_G_gen)</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-27-1"><a href="#interpolate-27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit_G_ind, fit_G_diag, fit_G_gen)</span>
-<span id="interpolate-27-2"><a href="#interpolate-27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">BIC</span>(fit_G_ind, fit_G_diag, fit_G_gen)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-26" class="solution-code d-none">round(data.frame(
+  AIC = c(AIC(fit_G_ind), AIC(fit_G_diag), AIC(fit_G_gen)),
+  BIC = c(BIC(fit_G_ind), BIC(fit_G_diag), BIC(fit_G_gen)),
+  row.names = c("identity", "diagonal", "general")), 1)</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-27-1"><a href="#interpolate-27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">data.frame</span>(</span>
+<span id="interpolate-27-2"><a href="#interpolate-27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">AIC =</span> <span class="fu">c</span>(<span class="fu">AIC</span>(fit_G_ind), <span class="fu">AIC</span>(fit_G_diag), <span class="fu">AIC</span>(fit_G_gen)),</span>
+<span id="interpolate-27-3"><a href="#interpolate-27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">BIC =</span> <span class="fu">c</span>(<span class="fu">BIC</span>(fit_G_ind), <span class="fu">BIC</span>(fit_G_diag), <span class="fu">BIC</span>(fit_G_gen)),</span>
+<span id="interpolate-27-4"><a href="#interpolate-27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="st">"identity"</span>, <span class="st">"diagonal"</span>, <span class="st">"general"</span>)), <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>The diagonal structure (fit_G_diag) has the lowest AIC and BIC. A diagonal random effects structure means that the intercept and slope vary independently between individuals (i.e., no covariance between random intercept and random slope). The best model uses AR(1) for residuals and diagonal structure for random effects G.</p>
+<p>The same comparison for the between-subject structure.</p>
+<p>Read this cautiously. A criterion ranks models; it does not tell you a parameter is real. If the general structure wins narrowly, check whether the extra covariance it estimates has a confidence interval that excludes zero before claiming girls who start higher also grow faster.</p>
 <ol start="4" type="1">
 <li>For your overall best model, interpret the parameters of the model.</li>
 </ol>
@@ -811,8 +771,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTEyIn0sImNvZGUiOiJf
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-33-1"><a href="#interpolate-33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_G_diag)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>Interpretion of the parameters of the model #### Fixed effect The model estimates the average log(FEV1/height) at age 0 to be -0.32 (though age 0 is outside the range of observed data- it’s just a baseline). For every 1-year increase in age, the log(FEV1/height) increases by approximately 0.058. This indicates growth in lung function relative to height over time, which is expected during adolescence. #### Random effect Individuals differ in both their baseline lung function (intercept) and rate of growth (slope). The variation in intercept is much larger than the variation in slope (0.0853 vs 0.0019), suggesting that most differences between individuals are in their starting level, not growth rate.<br>
-#### Random error There is a moderate autocorrelation in the residuals—observations closer in time are positively correlated, which supports the use of AR(1). This value of 0.62 implies a reasonable memory over time within individuals.</p>
+<p>The summary is the payoff. Three things to read.</p>
+<p><strong>Fixed effects.</strong> The coefficient on <code>age</code> is the population-average annual change in log(FEV1/height). It is positive, which is lung function growing through adolescence, as it should.</p>
+<p><strong>Random effects.</strong> The between-girl standard deviations, compared with the residual standard deviation below them. If the intercept SD is comparable to or larger than the residual SD, girls differ from one another about as much as a single girl varies between visits — which is what makes the mixed model worthwhile.</p>
+<p><strong>Correlation structure.</strong> The estimated AR(1) parameter Phi. A value well above zero says residuals remain related from one visit to the next even after the random effects have absorbed the between-girl differences.</p>
+<p>When you write this up, state each of these in a sentence about lung function rather than about the model.</p>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week02">
 <section id="week-2-complete" class="level2">
 <h2 class="anchored" data-anchor-id="week-2-complete">Week 2 complete</h2>
