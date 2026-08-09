@@ -116,6 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <script src="coi-serviceworker.js"></script>
+<script src="progress.js" defer=""></script>
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -405,8 +406,17 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#week-4-complete" id="toc-week-4-complete" class="nav-link active" data-scroll-target="#week-4-complete">Week 4 complete</a>
+  <ul class="collapse">
+  <li><a href="#what-you-have-learnt" id="toc-what-you-have-learnt" class="nav-link" data-scroll-target="#what-you-have-learnt">What you have learnt</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -769,6 +779,23 @@ summary(fepil.glmm)</code>
 </div>
 </div>
 <p>By including the covariate , the p-values show that the significance of the covariates and is marginal. and the interaction between and are not significant at <span class="math inline">\(5\%\)</span> significance level. The GLMM model that treats as a factor with four levels, leads to being significantly different from whilst other periods are not. The significance of the covariate is marginal and and the interaction between and </p>
+<div id="week-complete" class="lsda-complete" hidden="" data-week="week04">
+<section id="week-4-complete" class="level2">
+<h2 class="anchored" data-anchor-id="week-4-complete">Week 4 complete</h2>
+<div class="lsda-stamp">
+
+</div>
+<section id="what-you-have-learnt" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-have-learnt">What you have learnt</h3>
+<p>You have moved from Gaussian responses to counts, and from GLMs to GLMMs.</p>
+<ul>
+<li><strong>Why a GLM is not enough.</strong> Fitting a Poisson GLM to repeated seizure counts treats all 236 observations as independent when they come from 59 patients. The estimates may be reasonable; the standard errors are not.</li>
+<li><strong>The exponential family and the log link.</strong> For a Poisson model each coefficient is a log rate ratio, so <code>exp(coef)</code> is a multiplicative effect on the expected count.</li>
+<li><strong>Factor versus numeric time.</strong> Treating <code>period</code> as a factor lets each period have its own effect instead of assuming a straight line in period number — a weaker and often more honest assumption.</li>
+<li><strong>GLMMs by penalised quasi-likelihood.</strong> Adding a patient-specific random intercept accounts for patients who simply seize more than the covariates predict. Notice what happened to the standard errors.</li>
+<li><strong>Subject-specific interpretation.</strong> Unlike the GEE you meet next week, a GLMM coefficient describes a change <em>for a given patient</em>, not for the population average. For a non-linear link those are genuinely different quantities.</li>
+</ul>
+</section></section></div>
 
 
 <script type="webr-data">
@@ -788,6 +815,8 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0zNiIsImlubGluZSI6ZmFsc2UsIm1l
 <script type="vfs-file">
 W10=
 </script>
+
+
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">

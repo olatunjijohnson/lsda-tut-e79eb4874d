@@ -116,6 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <script src="coi-serviceworker.js"></script>
+<script src="progress.js" defer=""></script>
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -411,6 +412,10 @@ window.Quarto = {
    
   <ul>
   <li><a href="#challenge" id="toc-challenge" class="nav-link active" data-scroll-target="#challenge">Challenge</a></li>
+  <li><a href="#week-8-complete" id="toc-week-8-complete" class="nav-link" data-scroll-target="#week-8-complete">Week 8 complete</a>
+  <ul class="collapse">
+  <li><a href="#what-you-have-learnt" id="toc-what-you-have-learnt" class="nav-link" data-scroll-target="#what-you-have-learnt">What you have learnt</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -854,6 +859,25 @@ plot(pred_T_lb3,
 <li><strong>The distance that matters is set by <span class="math inline">\(\hat\phi\)</span>.</strong> With a practical range of about 43 km for model (1), a prediction location more than roughly that far from any station is effectively uninformed by the data. This is why the map of standard errors looks like a set of low-uncertainty basins around the station network.</li>
 <li><strong>Uncertainty maps are as important as prediction maps.</strong> A predicted value in a data-sparse region may look identical to one in a well-sampled region, but it is far less trustworthy. Presenting the mean surface without the standard error surface invites over-confident conclusions — and if the question of interest is whether lead exceeds some threshold, the answer should be given as an exceedance probability, which uses both.</li>
 </ul>
+<div id="week-complete" class="lsda-complete" hidden="" data-week="week08">
+</div></section>
+<section id="week-8-complete" class="level2">
+<h2 class="anchored" data-anchor-id="week-8-complete">Week 8 complete</h2>
+<div class="lsda-stamp">
+
+</div>
+<section id="what-you-have-learnt" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-have-learnt">What you have learnt</h3>
+<p>You have fitted geostatistical models and used them to predict.</p>
+<ul>
+<li><strong>The linear geostatistical model.</strong> <span class="math inline">\(\log(Y_i) = \beta_0 + S(x_i) + Z_i\)</span>, with <span class="math inline">\(S\)</span> a stationary Gaussian process and <span class="math inline">\(Z_i\)</span> a nugget.</li>
+<li><strong>The nugget is not free.</strong> Its estimate was essentially zero with an infinite upper confidence limit, because the design has almost no close pairs. A parameter you cannot identify is a parameter you should not fit — and if you want to estimate a nugget, put close pairs in the design deliberately.</li>
+<li><strong>Covariates change the covariance.</strong> Adding PM10 reduced both the process variance and the correlation scale: the covariate absorbed part of the spatial structure. Fixed and random parts of a spatial model are not independent of each other.</li>
+<li><strong>Wald and likelihood ratio tests can disagree.</strong> They did here for PM10. The Wald test holds the covariance parameters fixed; the likelihood ratio test lets them re-estimate, which is why it is the safer guide.</li>
+<li><strong>Phi is not the range.</strong> Convert it to a practical range — the distance at which correlation has decayed to about 0.05 — before interpreting it.</li>
+<li><strong>Kriging, and its uncertainty.</strong> Prediction variance is smallest near the data and rises towards the process variance as you move away. The map of standard errors is as important as the map of predictions; showing one without the other invites over-confidence.</li>
+</ul>
+</section></section></main></div>
 
 
 <script type="webr-data">
@@ -873,9 +897,10 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xNiIsImlubGluZSI6ZmFsc2UsIm1l
 <script type="vfs-file">
 W10=
 </script>
-</section>
 
-</main> <!-- /main -->
+
+
+ <!-- /main -->
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
 </script>
@@ -1300,7 +1325,7 @@ window._ojs.runtime.interpretFromScriptTags();
     }
   });
   </script>
-</div> <!-- /content -->
+ <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">

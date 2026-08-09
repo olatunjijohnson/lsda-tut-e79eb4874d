@@ -116,6 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <script src="coi-serviceworker.js"></script>
+<script src="progress.js" defer=""></script>
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
@@ -405,8 +406,17 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#week-2-complete" id="toc-week-2-complete" class="nav-link active" data-scroll-target="#week-2-complete">Week 2 complete</a>
+  <ul class="collapse">
+  <li><a href="#what-you-have-learnt" id="toc-what-you-have-learnt" class="nav-link" data-scroll-target="#what-you-have-learnt">What you have learnt</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -802,6 +812,24 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTEyIn0sImNvZGUiOiJf
 </div>
 <p>Interpretion of the parameters of the model #### Fixed effect The model estimates the average log(FEV1/height) at age 0 to be -0.32 (though age 0 is outside the range of observed data- it’s just a baseline). For every 1-year increase in age, the log(FEV1/height) increases by approximately 0.058. This indicates growth in lung function relative to height over time, which is expected during adolescence. #### Random effect Individuals differ in both their baseline lung function (intercept) and rate of growth (slope). The variation in intercept is much larger than the variation in slope (0.0853 vs 0.0019), suggesting that most differences between individuals are in their starting level, not growth rate.<br>
 #### Random error There is a moderate autocorrelation in the residuals—observations closer in time are positively correlated, which supports the use of AR(1). This value of 0.62 implies a reasonable memory over time within individuals.</p>
+<div id="week-complete" class="lsda-complete" hidden="" data-week="week02">
+<section id="week-2-complete" class="level2">
+<h2 class="anchored" data-anchor-id="week-2-complete">Week 2 complete</h2>
+<div class="lsda-stamp">
+
+</div>
+<section id="what-you-have-learnt" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-have-learnt">What you have learnt</h3>
+<p>You have fitted linear mixed models and chosen between covariance structures.</p>
+<ul>
+<li><strong>Two sources of within-subject correlation.</strong> Shared random effects (<span class="math inline">\(\mathbf{Z}_i \mathbf{G} \mathbf{Z}_i^{\mathrm{T}}\)</span>) and serial correlation in the errors (<span class="math inline">\(\mathbf{R}_i\)</span>). The marginal covariance is their sum.</li>
+<li><strong>Structures for <span class="math inline">\(\mathbf{R}_i\)</span>.</strong> Independence, compound symmetry (all pairs equally correlated), AR(1) (geometric decay with the gap) and ARMA(1,1). The choice is a claim about how correlation behaves over time, not a technicality.</li>
+<li><strong>Structures for <span class="math inline">\(\mathbf{G}\)</span>.</strong> Identity, diagonal and general — increasingly permissive about how subjects vary in intercept and slope, and whether those two are related.</li>
+<li><strong>Choosing between them</strong> with AIC and BIC, remembering that BIC penalises extra parameters harder, so the two can disagree.</li>
+<li><strong>Interpretation.</strong> A fitted mixed model tells you both the population average trajectory and how much individuals depart from it.</li>
+</ul>
+<p>Worth trying: <code>run_app("cov_explorer")</code> to see what each structure actually looks like as a matrix and as simulated trajectories.</p>
+</section></section></div>
 
 
 <script type="webr-data">
@@ -821,6 +849,8 @@ eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0yOCIsImlubGluZSI6ZmFsc2UsIm1l
 <script type="vfs-file">
 W10=
 </script>
+
+
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
