@@ -557,7 +557,9 @@ print(model.car)</code>
 <span id="interpolate-9-11"><a href="#interpolate-9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(model.car)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>We start by reading the shapefile of Scottish counties into an sf object, which allows spatial operations in R. Then defines the neighbours between regions using shared polygon boundaries. The argument snap = 200000 is crucial for this dataset because some Scottish counties are islands or separated by narrow channels. Without snap, R might fail to detect neighbours that are visually close but not touching. The snap = 200000 allows neighbouring polygons within 200 map units to be treated as adjacent. This improves connectivity in the spatial model by including islands or nearby coastal regions that should logically share risk structure. Then we converts the neighbour list to a binary adjacency matrix, where 1 indicates a neighbour, 0 otherwise. Then we fit the model such that - Outcome: cases = number of lip cancer cases - Offset: log(expected) adjusts for varying expected counts - Covariate: aff = ecological risk factor - Random Effects: spatial effects via Leroux CAR model and note that rho = 0 implies a model with CAR structure.</p>
+</div>
 <ol start="2" type="1">
 <li>Map the relative risk of lip cancer and their uncertainty for each of the counties. Interpret the result noting that the relative risk quantifies whether county <span class="math inline">\(i\)</span> has higher (<span class="math inline">\(\theta_i&gt;1\)</span>) or lower (<span class="math inline">\(\theta_i&lt;1\)</span>) risk than the average risk in the standard population.</li>
 </ol>
@@ -679,7 +681,9 @@ p1 + p2</code>
 <span id="interpolate-15-46"><a href="#interpolate-15-46" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>Then we calculate the relative risk (RR) and RR &gt; 1 implies higher than average risk and RR &lt; 1 implies lower than average risk. Above, we show the map of the RR and the posterior standard deviation (SD) of RR to show uncertainty in the estimates. The comparison plot shows how modelling (with spatial structure) can moderate extreme SIR values. SIR: direct estimate of risk from observed data (can be noisy). RR (posterior): smooths noisy data using the model, borrowing strength from neighbours. ### Challenge</p>
+</div>
 <ol type="1">
 <li>Map the probability that the relative risk is greater than 2.</li>
 </ol>
@@ -741,7 +745,9 @@ ggplot(scot) +
 <span id="interpolate-21-18"><a href="#interpolate-21-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>This shows the certainty that a county’s risk is more than twice the average. P(RR &gt; 2) = 1 implies Very likely high-risk and P(RR &gt; 2) = 0 implies Low certainty or not high-risk. This is particularly useful for flagging high-risk areas in public health settings.</p>
+</div>
 <ol start="2" type="1">
 <li>Fit another model where ( u_i ) is modeled using a Intrinsic Conditional Autoregressive (CAR) distribution</li>
 </ol>
@@ -776,7 +782,9 @@ print(model.icar)</code>
 <span id="interpolate-27-5"><a href="#interpolate-27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(model.icar)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>This forces full spatial correlation (ICAR model), which assumes strong dependency between neighbouring counties. It’s more realistic if spatial clustering is expected.</p>
+</div>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week10">
 </div></section>
 <section id="week-10-complete" class="level2">

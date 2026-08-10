@@ -657,7 +657,9 @@ pairs(treatment, main="Treatment")</code>
 <span id="interpolate-23-2"><a href="#interpolate-23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(treatment, <span class="at">main=</span><span class="st">"Treatment"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>\ The pairwise scatter plots show that the treatment group has larger correlation than the placebo group. For the treatment group, seizure counts over the periods are highly correlated, as also capture by the sample correlation matrix of the treatment group. <!-- 4.  The box plots for the two groups --> <!--    at each of the four periods are shown below --> <!-- ```{r indent = "     "} --> <!--    par(mfrow=c(1, 2)) --> <!-- boxplot( --> <!--   list(placebo$period1, placebo$period2, placebo$period3, placebo$period4), --> <!--   ylim=c(0, 30), --></p>
+</div>
 <ol start="4" type="1">
 <li>Consider a Poisson GLM applied to the dataset to analyse the effect of treatment on seizure counts. Assume that the number of seisure count follows a Poisson distribution with mean <span class="math inline">\(\lambda\)</span>, where</li>
 </ol>
@@ -696,7 +698,9 @@ summary(epil.glm)
 <span id="interpolate-29-5"><a href="#interpolate-29-5" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pchisq</span>(<span class="fl">869.37</span>, <span class="dv">230</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>Using the ordinary GLM with as a covariate to model the data, the covariate is statistically significant (p-value of <span class="math inline">\(0.00354\)</span>), and other covariates are significant too. However, <span class="math inline">\(1-\mbox{pchisq}( 869.37,230)\)</span> is quite small and is almost <span class="math inline">\(0\)</span>, meaning that there is a significant lack of evidence to support the null hypothesis (i.e GLM model provides an adequate fit for the data) <!-- the model is significantly different from the saturated/full model.  --> Thus the proposed model is not a good fitting.</p>
+</div>
 <ol start="5" type="1">
 <li>In Question (4) above, if the variable <em>Period</em> is treated as a factor with four levels, use the model to refit the data. Observe if each time period has a significant effect and interpret your results.</li>
 </ol>
@@ -738,7 +742,9 @@ summary(fepil.glm)
 <span id="interpolate-35-9"><a href="#interpolate-35-9" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">-</span><span class="fu">pchisq</span>( <span class="fl">867.6</span>,<span class="dv">228</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p> and , except for , are not significantly different from . But <span class="math inline">\(1-\mbox{pchisq}( 867.6,228)\)</span> is still almost <span class="math inline">\(0\)</span>, thus the proposed model is not a good fitting either.</p>
+</div>
 <ol start="6" type="1">
 <li>Reconsider Questions (4) and (5), but this time use GLMM (PQL approach) to analyse the data, incorporating a random intercept.</li>
 </ol>
@@ -779,7 +785,9 @@ summary(fepil.glmm)</code>
 <span id="interpolate-41-7"><a href="#interpolate-41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fepil.glmm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>By including the covariate , the p-values show that the significance of the covariates and is marginal. and the interaction between and are not significant at <span class="math inline">\(5\%\)</span> significance level. The GLMM model that treats as a factor with four levels, leads to being significantly different from whilst other periods are not. The significance of the covariate is marginal and and the interaction between and </p>
+</div>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week04">
 <section id="week-4-complete" class="level2">
 <h2 class="anchored" data-anchor-id="week-4-complete">Week 4 complete</h2>

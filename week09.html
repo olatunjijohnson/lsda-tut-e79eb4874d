@@ -531,7 +531,9 @@ glimpse(scot)</code>
 <span id="interpolate-9-5"><a href="#interpolate-9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(scot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>This shapefile includes Scotland counties with observed (observed) and expected (expected) lip cancer counts and an aff variable.</p>
+</div>
 <ol start="2" type="1">
 <li>Calculate the standardized incidence ratios (SIRs) in the Scotland counties, defined as observed cases divided by expected cases, map and interpret it.</li>
 </ol>
@@ -571,7 +573,9 @@ tm_shape(scot) +
 <span id="interpolate-15-7"><a href="#interpolate-15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Standardized Incidence Ratios (SIR) in Scotland"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>Red color correspond to higher SIRs, i.e., higher-than-expected lip cancer cases. Counties with SIR &gt; 1 (darker red areas) have a higher-than-expected incidence. This could suggest localized risk factors, possibly linked to environmental or occupational exposure.</p>
+</div>
 <ol start="3" type="1">
 <li>Plot the scatter plot of the SIR and aff. Is there any substantial association between the variables?</li>
 </ol>
@@ -604,7 +608,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTAzIn0sImNvZGUiOiJw
 <span id="interpolate-21-4"><a href="#interpolate-21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"SIR vs. aff"</span>, <span class="at">x =</span> <span class="st">"Proportion in aff"</span>, <span class="at">y =</span> <span class="st">"SIR"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>The scatter shows the plot with SIR on the y-axis and aff (proportion in agriculture, fishing, or forestry) on the x-axis. A regression line (in red) with a slight upward slope. There appears to be a weak positive association: counties with more people in aff-related jobs may have higher SIRs. This is consistent with the hypothesis that sun exposure (common in those occupations) might be linked to lip cancer risk.However, the spread is large, and correlation may not be strong without further statistical testing.</p>
+</div>
 <ol start="4" type="1">
 <li>Calculate the neighbors of each of the regions of Scotland based on Queen contiguity and map the neighbors obtained.</li>
 </ol>
@@ -641,7 +647,9 @@ plot(nb_queen, st_geometry(scot), main = "Queen Contiguity Neighbors", add = TRU
 <span id="interpolate-27-5"><a href="#interpolate-27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nb_queen, <span class="fu">st_geometry</span>(scot), <span class="at">main =</span> <span class="st">"Queen Contiguity Neighbors"</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>Most counties have more than one neighbors, some with zero. The map shows the connectedness of the counties and these are essential for defining spatial weights and for modeling spatial dependence.</p>
+</div>
 <ol start="5" type="1">
 <li>Which county or counties has the largest number of neigbours.</li>
 </ol>
@@ -671,7 +679,9 @@ most_connected</code>
 <span id="interpolate-33-3"><a href="#interpolate-33-3" aria-hidden="true" tabindex="-1"></a>most_connected</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>The county with the largest number of neigbours is Perth-Kinross.</p>
+</div>
 <ol start="6" type="1">
 <li>Produce a map showing the wigtown county and its neighbors.</li>
 </ol>
@@ -709,7 +719,9 @@ ggplot(scot) + geom_sf(aes(fill = neighbors)) + theme_bw() +
 <span id="interpolate-39-7"><a href="#interpolate-39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"gray"</span>, <span class="st">"white"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>A map shows Wigtown and its neighboring counties.</p>
+</div>
 <ol start="7" type="1">
 <li>Construct the spatial weights matrix using the binary coding, and the row standardized (1/number of neighbors) coding.</li>
 </ol>
@@ -745,13 +757,13 @@ W_rowstd[1:10, 1:10]</code>
 <span id="interpolate-45-5"><a href="#interpolate-45-5" aria-hidden="true" tabindex="-1"></a>W_rowstd[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<section id="row-standardized-weights" class="level3">
+<section id="row-standardized-weights" class="level3 solution-note">
 <h3 class="anchored" data-anchor-id="row-standardized-weights">Row-standardized Weights</h3>
 <p>We display top 10 rows and columns of the spatial weights matrices. Binary - 1 for neighbor, 0 for non-neighbor. Simple and unweighted. Row-standardized - each row sums to 1, so influence is spread equally across neighbors. These matrices are used in calculating spatial lags and in autocorrelation tests.</p>
+</section>
 <ol start="8" type="1">
 <li>Check for the evidence of spatial correlation using Moran I test?</li>
 </ol>
-</section>
 <section id="challenge" class="level2">
 <h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
 <div class="cell" data-exercise="q08">
@@ -783,7 +795,9 @@ moran.test(scot$SIR, lw, zero.policy = TRUE)</code>
 <span id="interpolate-51-3"><a href="#interpolate-51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(scot<span class="sc">$</span>SIR, lw, <span class="at">zero.policy =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>Moran’s I is highly significant (p &lt; 0.000001), indicating strong spatial autocorrelation in SIR. In plain terms: counties with high SIR tend to be near other counties with high SIR, and same for low SIR. This validates the need to account for spatial structure in modeling cancer risk. ## Challenge</p>
+</div>
 <ol type="1">
 <li>Calculate the neighbors of each of the regions of Scotland based on 3 nearest neighbors and map the neighbors obtained.</li>
 </ol>
@@ -819,7 +833,9 @@ plot(nb_knn3, coords, main = "3-Nearest Neighbor Connectivity", add = T)</code>
 <span id="interpolate-57-5"><a href="#interpolate-57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nb_knn3, coords, <span class="at">main =</span> <span class="st">"3-Nearest Neighbor Connectivity"</span>, <span class="at">add =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>Each county is connected to its 3 closest neighbors by distance. Useful when physical proximity is more important than shared boundaries (e.g., for air pollution, etc.).</p>
+</div>
 <ol start="2" type="1">
 <li>Calculate the neighbors of each of the regions of Scotland based on distance and map the neighbors obtained.</li>
 </ol>
@@ -849,7 +865,9 @@ plot(dists, coords, main = "Distance-Based Neighbors", add= T)</code>
 <span id="interpolate-63-3"><a href="#interpolate-63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dists, coords, <span class="at">main =</span> <span class="st">"Distance-Based Neighbors"</span>, <span class="at">add=</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>Counties within the distance of 50 to each other are connected. Allows flexible neighborhood structures based on absolute proximity. May capture spatial spillover more naturally than contiguity in some contexts.</p>
+</div>
 <ol start="3" type="1">
 <li>Calculate the neighbors of each of the regions of Scotland based on contiguity Neighbors of order 2 and map the neighbors obtained.</li>
 </ol>
@@ -879,7 +897,9 @@ plot(nb_order2[[2]], coords, main = "Second-Order Queen Neighbors", add = T)</co
 <span id="interpolate-69-3"><a href="#interpolate-69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nb_order2[[<span class="dv">2</span>]], coords, <span class="at">main =</span> <span class="st">"Second-Order Queen Neighbors"</span>, <span class="at">add =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>This visualizes neighbors-of-neighbors.</p>
+</div>
 <ol start="4" type="1">
 <li>Construct the spatial weights matrix using inverse distance values.</li>
 </ol>
@@ -911,7 +931,9 @@ lw_inv[1:10, 1:10]</code>
 <span id="interpolate-75-4"><a href="#interpolate-75-4" aria-hidden="true" tabindex="-1"></a>lw_inv[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="solution-note">
 <p>We are showing a few rows and columns of the spatial weight matrix based on inverse distance. Closer neighbors have more influence, farther ones less.</p>
+</div>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week09">
 </div></section>
 <section id="week-9-complete" class="level2">
