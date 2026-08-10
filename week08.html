@@ -610,18 +610,13 @@ summary(model3)</code>
 <span id="interpolate-9-38"><a href="#interpolate-9-38" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<pre><code>- Do not including any covariate, but include the nugget effect i.e.
-     \begin{equation}\label{eq:glgm_no_cov_nug}
-     \log(Y_i) = \beta_0 + S(x_i) + Z_i,
-\end{equation}
-   where  and $Z_i$ are i.i.d. Gaussian random variables.
-  What does the estimate of the nugget effect tell you about its importance in this model?
-- Fit another model including the east-west ordinates ( of the geo-coordinates as a covariate on the linear scale, but excluding the nugget effect.
-     \begin{equation}\label{eq:glgm_lin}
-     \log(Y_i) = \beta_0 + \beta_1 x_{i, 1} + S(x_i).
-\end{equation}</code></pre>
-<p>How did adding <span class="math inline">\(x_{i, 1}\)</span> affect the estimates of the covariance parameters?</p>
+<div class="lsda-explain" data-for="q01" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>Three fits, differing only in the formula.</p>
+<p><strong>Model 2 versus model 1.</strong> The nugget is estimated at about 0.00087, roughly 2.7% of the spatial variance, with a confidence interval running to infinity — completely uninformative. The log-likelihood is identical to model 1 to four decimal places, so the extra parameter has bought no fit at all.</p>
+<p>This is a design consequence, not a failure. The nugget describes behaviour at distances shorter than the closest pair of stations, and the Galicia network has very few such pairs, so the likelihood is almost flat in <span class="math inline">\(\tau^2\)</span>. If you need to estimate a nugget, put close pairs into the design deliberately.</p>
+<p><strong>Model 3.</strong> PM10 enters with a coefficient around 0.011 and a Wald p-value below 0.001. Note also what happened to the covariance parameters: the process variance falls from 0.0323 to 0.0304 and the correlation scale from 9.02 to 7.86 km. The covariate has absorbed part of the spatial structure, because PM10 is itself spatially smooth. Fixed and random parts of a spatial model are not separable.</p>
+<p>One caution before you conclude PM10 matters. The likelihood ratio test gives <span class="math inline">\(2 \times (180.80 - 179.12) = 3.35\)</span> on 1 degree of freedom, so <span class="math inline">\(p \approx 0.067\)</span> — much weaker than the Wald test suggests. The Wald test holds the covariance parameters fixed at their estimates while the likelihood ratio test lets them re-estimate, and here they move noticeably. When the two disagree, trust the likelihood ratio test.</p>
 </div>
 <ol start="2" type="1">
 <li>Which of the three models you have just fitted, <span class="math inline">\(\ref{eq:glgm_no_cov}\)</span> , <span class="math inline">\(\ref{eq:glgm_no_cov_nug}\)</span> and <span class="math inline">\(\ref{eq:glgm_lin}\)</span>, do you consider the best model? Why?</li>
@@ -721,6 +716,11 @@ practical_range</code>
 <span id="interpolate-15-4"><a href="#interpolate-15-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">lower =</span> <span class="fl">0.001</span>, <span class="at">upper =</span> <span class="dv">100</span>)<span class="sc">$</span>root</span>
 <span id="interpolate-15-5"><a href="#interpolate-15-5" aria-hidden="true" tabindex="-1"></a>practical_range</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+</div>
+<div class="lsda-explain" data-for="q03" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p><span class="math inline">\(\phi\)</span> is a scale parameter, not a distance at which correlation dies away — the multiplier depends on the smoothness <span class="math inline">\(\kappa\)</span>. Converting it gives a practical range of about 43 km for model 1 and 37 km for model 3: the distance beyond which correlation has fallen to roughly 0.05.</p>
+<p>Report the practical range, not <span class="math inline">\(\phi\)</span>. It is the number a collaborator can interpret, and it is what tells you how far the data can reach when predicting.</p>
 </div>
 <ol start="4" type="1">
 <li>Using Models <span class="math inline">\(\ref{eq:glgm_no_cov}\)</span> and <span class="math inline">\(\ref{eq:glgm_lin}\)</span>, generate spatial predictions for the log-transformed lead concentration across Galicia at a 1 km resolution. Utilize the provided grid <code>galicia_grid</code> and predictor variables <code>galicia_pred</code> to perform these predictions. Create maps showing both the predicted log lead concentrations and their corresponding standard errors.</li>
@@ -829,6 +829,14 @@ plot(pred_T_lb3,
 <span id="interpolate-21-41"><a href="#interpolate-21-41" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Predictive standard error"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<div class="lsda-explain" data-for="q04" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>Two maps, and the second is as important as the first.</p>
+<p>The <strong>prediction surface</strong> is smooth and looks equally confident everywhere, which it is not.</p>
+<p>The <strong>standard error surface</strong> shows why. Uncertainty is low around the stations and rises in the gaps and towards the edges, where prediction becomes extrapolation. The kriging variance is <span class="math inline">\(\sigma^2 - \mathbf{c}_0^{\mathrm{T}}\boldsymbol{\Sigma}^{-1}\mathbf{c}_0\)</span>: near data the subtracted term is large, and far away the correlations decay to nothing and the variance returns to the prior variance, meaning the model has nothing to add beyond the overall mean.</p>
+<p>The scale over which that happens is the practical range from item 3 — about 43 km. A location further than that from any station is effectively uninformed.</p>
+<p>Presenting the prediction map without the uncertainty map invites exactly the over-confident reading the model was fitted to avoid. If the question is whether lead exceeds a threshold, give an exceedance probability, which uses both.</p>
+</div>
 <ol start="5" type="1">
 <li>Compare the mean predictions and associated uncertainties from the two models. Discuss the similarities and differences observed, particularly in terms of spatial patterns and predictive uncertainty.</li>
 </ol>
@@ -844,17 +852,6 @@ plot(pred_T_lb3,
 <ol start="6" type="1">
 <li>Identify the geographical areas where the predictive uncertainty is lowest. Provide an explanation for why uncertainty is reduced in these regions, considering the spatial structure of the data and the influence of nearby observations.</li>
 </ol>
-<section id="challenge" class="level2">
-<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
-<p>Use the <code>Liberia</code> data from the <code>RiskMap</code> package to build a binomial geostatistical model to investigate the relationship between log elevation and onchocerciasis prevalence in Liberia.. The dataset can be called in R using data(liberia). This data-set contains counts of reported onchocerciasis (or riverblindess) cases from 91 villages sampled across Liberia. The variables are as follows:</p>
-<ul>
-<li><p>lat latitude of the of sampled villages.</p></li>
-<li><p>long longitude of the sampled villages.</p></li>
-<li><p>ntest number of tested people for the presence nodules.</p></li>
-<li><p>npos number of people that tested positive for the presence of nodules.</p></li>
-<li><p>elevation the elevation in meters of the sampled village.</p></li>
-<li><p>log_elevation the log-transformed elevation in meters of the sampled village.</p></li>
-</ul>
 <div class="solution-note">
 <p>Predictive uncertainty is lowest <strong>close to the sampling stations</strong>, and particularly where several stations are clustered together. It is highest in the gaps between stations and around the edges of the study region, where prediction becomes extrapolation.</p>
 <p>The reason is in the kriging variance. For a Gaussian process the prediction variance at a location <span class="math inline">\(x_0\)</span> is</p>
@@ -868,6 +865,17 @@ plot(pred_T_lb3,
 <li><strong>Uncertainty maps are as important as prediction maps.</strong> A predicted value in a data-sparse region may look identical to one in a well-sampled region, but it is far less trustworthy. Presenting the mean surface without the standard error surface invites over-confident conclusions — and if the question of interest is whether lead exceeds some threshold, the answer should be given as an exceedance probability, which uses both.</li>
 </ul>
 </div>
+<section id="challenge" class="level2">
+<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
+<p>Use the <code>Liberia</code> data from the <code>RiskMap</code> package to build a binomial geostatistical model to investigate the relationship between log elevation and onchocerciasis prevalence in Liberia.. The dataset can be called in R using data(liberia). This data-set contains counts of reported onchocerciasis (or riverblindess) cases from 91 villages sampled across Liberia. The variables are as follows:</p>
+<ul>
+<li><p>lat latitude of the of sampled villages.</p></li>
+<li><p>long longitude of the sampled villages.</p></li>
+<li><p>ntest number of tested people for the presence nodules.</p></li>
+<li><p>npos number of people that tested positive for the presence of nodules.</p></li>
+<li><p>elevation the elevation in meters of the sampled village.</p></li>
+<li><p>log_elevation the log-transformed elevation in meters of the sampled village.</p></li>
+</ul>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week08">
 </div></section>
 <section id="week-8-complete" class="level2">

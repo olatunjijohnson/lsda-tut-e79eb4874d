@@ -557,14 +557,16 @@ print(model.car)</code>
 <span id="interpolate-9-11"><a href="#interpolate-9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(model.car)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>We start by reading the shapefile of Scottish counties into an sf object, which allows spatial operations in R. Then defines the neighbours between regions using shared polygon boundaries. The argument snap = 200000 is crucial for this dataset because some Scottish counties are islands or separated by narrow channels. Without snap, R might fail to detect neighbours that are visually close but not touching. The snap = 200000 allows neighbouring polygons within 200 map units to be treated as adjacent. This improves connectivity in the spatial model by including islands or nearby coastal regions that should logically share risk structure. Then we converts the neighbour list to a binary adjacency matrix, where 1 indicates a neighbour, 0 otherwise. Then we fit the model such that - Outcome: cases = number of lip cancer cases - Offset: log(expected) adjusts for varying expected counts - Covariate: aff = ecological risk factor - Random Effects: spatial effects via Leroux CAR model and note that rho = 0 implies a model with CAR structure.</p>
+<div class="lsda-explain" data-for="q01" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>Two things are happening here.</p>
+<p>The adjacency matrix is built from the polygons as in week 9. Note the <code>snap</code> argument in metres — the geometry is in metres, so a tolerance meant to bridge the islands has to be too, and 200 would be 200 metres rather than 200 km.</p>
+<p>Then <code>S.CARleroux</code> fits the Bayesian model by MCMC. Read the output for the <code>aff</code> coefficient and its credible interval, and check the model has converged before trusting anything else.</p>
+<p>The <code>offset(log(expected))</code> is doing essential work. Without it you are modelling the number of cases, which mostly reflects population size. With it, the linear predictor describes the log relative risk — how the observed count compares with what the county’s demographic structure predicts. That is the epidemiological quantity.</p>
 </div>
 <ol start="2" type="1">
 <li>Map the relative risk of lip cancer and their uncertainty for each of the counties. Interpret the result noting that the relative risk quantifies whether county <span class="math inline">\(i\)</span> has higher (<span class="math inline">\(\theta_i&gt;1\)</span>) or lower (<span class="math inline">\(\theta_i&lt;1\)</span>) risk than the average risk in the standard population.</li>
 </ol>
-<section id="challenge" class="level2">
-<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
 <div class="cell" data-exercise="q02">
 <div>
 <div id="webr-10" class="exercise-cell">
@@ -681,9 +683,15 @@ p1 + p2</code>
 <span id="interpolate-15-46"><a href="#interpolate-15-46" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>Then we calculate the relative risk (RR) and RR &gt; 1 implies higher than average risk and RR &lt; 1 implies lower than average risk. Above, we show the map of the RR and the posterior standard deviation (SD) of RR to show uncertainty in the estimates. The comparison plot shows how modelling (with spatial structure) can moderate extreme SIR values. SIR: direct estimate of risk from observed data (can be noisy). RR (posterior): smooths noisy data using the model, borrowing strength from neighbours. ### Challenge</p>
+<div class="lsda-explain" data-for="q02" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>The smoothed relative risk, and its uncertainty, mapped.</p>
+<p>Compare the smoothed map with the raw SIR map from week 9. The counties that move most are those with <strong>small expected counts</strong>: where the data are weak, the CAR prior pulls the estimate towards the neighbourhood average; where the data are strong, the likelihood dominates and the estimate barely moves.</p>
+<p>That is borrowing strength, and it is the same idea as BLUP shrinkage in week 3 — a compromise between what one unit’s own data say and what its neighbours say, weighted by how much information the unit provides.</p>
+<p>The uncertainty map matters as much as the estimate map. A relative risk of 1.9 means something quite different with a narrow posterior than with a wide one.</p>
 </div>
+<section id="challenge" class="level2">
+<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
 <ol type="1">
 <li>Map the probability that the relative risk is greater than 2.</li>
 </ol>
@@ -745,8 +753,10 @@ ggplot(scot) +
 <span id="interpolate-21-18"><a href="#interpolate-21-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>This shows the certainty that a county’s risk is more than twice the average. P(RR &gt; 2) = 1 implies Very likely high-risk and P(RR &gt; 2) = 0 implies Low certainty or not high-risk. This is particularly useful for flagging high-risk areas in public health settings.</p>
+<div class="lsda-explain" data-for="q03" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>The posterior probability that relative risk exceeds 2, computed by counting the proportion of posterior samples above 2 for each county.</p>
+<p>This is a more useful statement than a point estimate for anyone making a decision. “The estimated risk is 1.9” leaves open how confident we are; “<span class="math inline">\(P(\theta_i &gt; 2 \mid \text{data}) = 0.8\)</span>” answers the question directly. Being able to compute any functional of the posterior straight from the samples is one of the practical advantages of the Bayesian approach.</p>
 </div>
 <ol start="2" type="1">
 <li>Fit another model where ( u_i ) is modeled using a Intrinsic Conditional Autoregressive (CAR) distribution</li>
@@ -782,8 +792,10 @@ print(model.icar)</code>
 <span id="interpolate-27-5"><a href="#interpolate-27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(model.icar)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>This forces full spatial correlation (ICAR model), which assumes strong dependency between neighbouring counties. It’s more realistic if spatial clustering is expected.</p>
+<div class="lsda-explain" data-for="q04" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>The ICAR model fixes the spatial dependence parameter at its maximum, so all the area-level variation is assumed spatially structured.</p>
+<p>Compare its fitted risks with the Leroux model’s. ICAR generally smooths more, because it has no way to represent an area effect that is simply idiosyncratic. Leroux estimates the balance between structured and unstructured variation instead of assuming it, which is usually the safer default — but it is worth seeing what the stronger assumption does to the map.</p>
 </div>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week10">
 </div></section>

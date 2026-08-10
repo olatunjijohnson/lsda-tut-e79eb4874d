@@ -120,35 +120,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="checkpoint.js" defer=""></script>
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -552,8 +523,10 @@ legend("topright", legend = c("Cataglyphis", "Messor"),
 <span id="interpolate-10-9"><a href="#interpolate-10-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">17</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>This summary shows that the average intensity is 0.000226 points per square unit. The proportion of Cataglyphis nests is 29.9%, Messor 70.1%. The observation window is irregularly shaped. The plot shows two types of ant nests (Cataglyphis and Messor) distributed within a polygonal study window. Messor nests are represented by blue triangles (likely pch = 17) and Cataglyphis by red dots (pch = 16).</p>
+<div class="lsda-explain" data-for="q01" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>The ant nest pattern, and the summary gives the window, the number of points and the average intensity.</p>
+<p>Look at the plot and form an opinion before computing anything: does it look clustered, evenly spread, or neither? Point pattern analysis rewards having a prior expectation, because several of the statistics are easy to misread.</p>
 </div>
 <ol start="2" type="1">
 <li>Perform exploratory data analysis on the point pattern, including quadrat counting and kernel intensity estimation?</li>
@@ -597,8 +570,11 @@ plot(ants, add=TRUE, pch=16, cex=0.5)</code>
 <span id="interpolate-16-8"><a href="#interpolate-16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ants, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">cex=</span><span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>The quadrat counts show considerable variation in nest counts across quadrats. Some quadrats have 0 nests while others have up to 9. This suggests possible spatial inhomogeneity ### Kernel intensity estimation Let’s estimate the spatial intensity using kernel smoothing: The intensity surface shows spatial variability, with hotspots where ant nests are more concentrated. The Diggle bandwidth selector automatically chose an appropriate smoothing parameter</p>
+<div class="lsda-explain" data-for="q02" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>Two complementary views of the <strong>first-order</strong> structure — how the density of points varies across the window.</p>
+<p><strong>Quadrat counts</strong> are crude but directly testable. <strong>Kernel intensity</strong> is smooth and easier to look at, but the bandwidth is a choice: too small and you are looking at noise, too large and you smooth the structure away.</p>
+<p>Neither says anything about whether points interact with one another. That is second-order structure, and it comes later.</p>
 </div>
 <ol start="3" type="1">
 <li>Fit spatial point process models to the data, starting with a homogeneous Poisson process and then extending to an inhomogeneous Poisson process with spatial covariates?</li>
@@ -636,8 +612,10 @@ summary(ppm_inhom)</code>
 <span id="interpolate-22-5"><a href="#interpolate-22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ppm_inhom)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>Key points are as follows: - The model assumes constant intensity across the study area - The estimated intensity is 0.000113 nests per square unit for each species - The log intensity is -9.087 with SE 0.102 - This is the simplest model, assuming no spatial trends ### Inhomogeneous Poisson process with coordinates as covariates Now we fit a model with spatial trend using x and y coordinates: Key points are as follows: - The model includes linear trends in x and y directions - Neither x nor y coefficients are statistically significant (p-values &gt; 0.05) - The model suggests weak spatial trends at best</p>
+<div class="lsda-explain" data-for="q03" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>The homogeneous model assumes constant intensity; the inhomogeneous one lets the log intensity vary linearly across the window.</p>
+<p>Both are still Poisson processes, and this is the point students most often miss: in both, points are placed <strong>independently</strong> given the intensity. Only the first-order structure has changed. Neither model contains any interaction between points.</p>
 </div>
 <ol start="4" type="1">
 <li>Assess the goodness-of-fit of the fitted models using quadrat tests?</li>
@@ -666,14 +644,15 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTA0In0sImNvZGUiOiJf
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-28-1"><a href="#interpolate-28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quadrat.test</span>(ants, <span class="at">nx=</span><span class="dv">5</span>, <span class="at">ny=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p><span class="math inline">\(\chi^2\)</span> = 18.512, df = 23, p-value = 0.5417 suggesting that the test does not reject CSR. However, this doesn’t account for possible inhomogeneity</p>
+<div class="lsda-explain" data-for="q04" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>A small p-value says the homogeneous Poisson model does not fit.</p>
+<p>It does not say why. The test compares observed and expected counts per cell, so it responds to a varying intensity and to interaction between points in exactly the same way. To distinguish them you need the K-function — and even that needs care, as item 7 shows.</p>
+<p>Note also the warning about small expected counts: the chi-squared approximation is unreliable when quadrats contain few points, which is a reason to be cautious about the exact p-value rather than just the conclusion.</p>
 </div>
 <ol start="5" type="1">
 <li>Analyze the second-order properties of the point pattern using the K-function, and interpret whether the pattern is clustered, regular, or random?</li>
 </ol>
-<section id="challenge" class="level2">
-<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
 <div class="cell" data-exercise="q05">
 <div>
 <div id="webr-29" class="exercise-cell">
@@ -720,9 +699,13 @@ abline(h = 0, lty = 2, col = "gray40")</code>
 <span id="interpolate-34-12"><a href="#interpolate-34-12" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"gray40"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>The observed K-function (black line) mostly falls within the CSR envelope. Some slight deviation at intermediate distances (50-100 units). There is no strong evidence of clustering or regularity. The pattern is generally consistent with CSR ### Challenge</p>
+<div class="lsda-explain" data-for="q05" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>Ripley’s K with a simulation envelope under complete spatial randomness.</p>
+<p>Above the theoretical curve suggests clustering, below suggests regularity or inhibition. For ant nests, competition for space and forage makes regularity the biologically plausible expectation.</p>
 </div>
+<section id="challenge" class="level2">
+<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
 <ol type="1">
 <li>Fit a model with a quadratic trend surface using x + y + I(x^2) + I(y^2) as covariates. Compare it with the linear model.</li>
 </ol>
@@ -758,8 +741,10 @@ AIC(ppm_quad)</code>
 <span id="interpolate-40-5"><a href="#interpolate-40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(ppm_quad)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>The quadratic terms are not statistically significant. AIC for linear model: 1961.509 and AIC for quadratic model: 1964.004. The simpler linear model is preferred (lower AIC)</p>
+<div class="lsda-explain" data-for="q06" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>The quadratic trend surface can capture a ridge or a hollow in intensity that a plane cannot. Compare with the linear fit by AIC.</p>
+<p>Be careful about what this shows: a better-fitting intensity surface tells you the points are unevenly distributed, not that they interact.</p>
 </div>
 <ol start="2" type="1">
 <li>Simulate 99 point patterns from your best model and compare their envelope with the observed K-function using envelope().</li>
@@ -812,8 +797,12 @@ abline(h = 0, lty = 2, col = "gray40")</code>
 <span id="interpolate-46-12"><a href="#interpolate-46-12" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">"gray40"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div class="solution-note">
-<p>The observed K-function remains within the simulation envelope. The quadratic terms didn’t improve model fit. The spatial pattern is well-described by CSR or simple linear trend.</p>
+<div class="lsda-explain" data-for="q07" hidden="">
+<div class="lsda-explain-head">What this shows</div>
+<p>This is the sharpest idea in the week.</p>
+<p>The envelope is now simulated from the <strong>fitted inhomogeneous model</strong> rather than from complete spatial randomness. That changes the question from “are these points arranged as if uniform and independent?” to “is there anything left once the trend is accounted for?”.</p>
+<p>It matters because a varying intensity alone produces more close pairs than CSR predicts, and so makes an independent pattern look clustered. Comparing against CSR confounds first-order and second-order structure. If the observed K now sits inside the envelope, the apparent clustering was inhomogeneity all along.</p>
+<p>This confounding is the most common real error in point pattern analysis, and it is worth remembering well beyond this course.</p>
 </div>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week11">
 </div></section>
