@@ -916,7 +916,7 @@ plot(pred_T_lb3,
 </div>
 <section id="challenge" class="level2">
 <h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
-<p>Use the <code>Liberia</code> data from the <code>RiskMap</code> package to build a binomial geostatistical model to investigate the relationship between log elevation and onchocerciasis prevalence in Liberia.. The dataset can be called in R using data(liberia). This data-set contains counts of reported onchocerciasis (or riverblindess) cases from 91 villages sampled across Liberia. The variables are as follows:</p>
+<p>Use the <code>Liberia</code> data from the <code>RiskMap</code> package to build a binomial geostatistical model to investigate the relationship between log elevation and onchocerciasis prevalence in Liberia. The dataset can be called in R using data(liberia). This data-set contains counts of reported onchocerciasis (or river blindness) cases from 90 villages sampled across Liberia. The variables are as follows:</p>
 <ul>
 <li><p>lat latitude of the of sampled villages.</p></li>
 <li><p>long longitude of the sampled villages.</p></li>
@@ -954,8 +954,10 @@ crs_lb &lt;- propose_utm(liberia_sf)
 liberia_sf &lt;- st_transform(liberia_sf, crs = crs_lb)
 
 
-# Fitting a Binomial geostatistical model
-
+# Fitting a Binomial geostatistical model.
+# glgpm() uses Monte Carlo maximum likelihood, so results depend on the random
+# seed: set it for reproducibility, and refit with another seed to check.
+set.seed(1)
 lb_fit &lt;- glgpm(npos ~ log(elevation) + gp(),
                 den = ntest,
                 family = "binomial",
@@ -982,24 +984,33 @@ summary(lb_fit_n)</code>
 <span id="interpolate-27-10"><a href="#interpolate-27-10" aria-hidden="true" tabindex="-1"></a>liberia_sf <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(liberia_sf, <span class="at">crs =</span> crs_lb)</span>
 <span id="interpolate-27-11"><a href="#interpolate-27-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="interpolate-27-12"><a href="#interpolate-27-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-27-13"><a href="#interpolate-27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting a Binomial geostatistical model</span></span>
-<span id="interpolate-27-14"><a href="#interpolate-27-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-27-15"><a href="#interpolate-27-15" aria-hidden="true" tabindex="-1"></a>lb_fit <span class="ot">&lt;-</span> <span class="fu">glgpm</span>(npos <span class="sc">~</span> <span class="fu">log</span>(elevation) <span class="sc">+</span> <span class="fu">gp</span>(),</span>
-<span id="interpolate-27-16"><a href="#interpolate-27-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">den =</span> ntest,</span>
-<span id="interpolate-27-17"><a href="#interpolate-27-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
-<span id="interpolate-27-18"><a href="#interpolate-27-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> liberia_sf)</span>
-<span id="interpolate-27-19"><a href="#interpolate-27-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-27-20"><a href="#interpolate-27-20" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lb_fit)</span>
+<span id="interpolate-27-13"><a href="#interpolate-27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting a Binomial geostatistical model.</span></span>
+<span id="interpolate-27-14"><a href="#interpolate-27-14" aria-hidden="true" tabindex="-1"></a><span class="co"># glgpm() uses Monte Carlo maximum likelihood, so results depend on the random</span></span>
+<span id="interpolate-27-15"><a href="#interpolate-27-15" aria-hidden="true" tabindex="-1"></a><span class="co"># seed: set it for reproducibility, and refit with another seed to check.</span></span>
+<span id="interpolate-27-16"><a href="#interpolate-27-16" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="interpolate-27-17"><a href="#interpolate-27-17" aria-hidden="true" tabindex="-1"></a>lb_fit <span class="ot">&lt;-</span> <span class="fu">glgpm</span>(npos <span class="sc">~</span> <span class="fu">log</span>(elevation) <span class="sc">+</span> <span class="fu">gp</span>(),</span>
+<span id="interpolate-27-18"><a href="#interpolate-27-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">den =</span> ntest,</span>
+<span id="interpolate-27-19"><a href="#interpolate-27-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
+<span id="interpolate-27-20"><a href="#interpolate-27-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> liberia_sf)</span>
 <span id="interpolate-27-21"><a href="#interpolate-27-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-27-22"><a href="#interpolate-27-22" aria-hidden="true" tabindex="-1"></a><span class="do">### Including the nugget effect Z_i</span></span>
+<span id="interpolate-27-22"><a href="#interpolate-27-22" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lb_fit)</span>
 <span id="interpolate-27-23"><a href="#interpolate-27-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-27-24"><a href="#interpolate-27-24" aria-hidden="true" tabindex="-1"></a>lb_fit_n <span class="ot">&lt;-</span> <span class="fu">glgpm</span>(npos <span class="sc">~</span> <span class="fu">log</span>(elevation) <span class="sc">+</span> <span class="fu">gp</span>(<span class="at">nugget =</span> <span class="cn">NULL</span>),</span>
-<span id="interpolate-27-25"><a href="#interpolate-27-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">den =</span> ntest,</span>
-<span id="interpolate-27-26"><a href="#interpolate-27-26" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
-<span id="interpolate-27-27"><a href="#interpolate-27-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> liberia_sf)</span>
-<span id="interpolate-27-28"><a href="#interpolate-27-28" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lb_fit_n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="interpolate-27-24"><a href="#interpolate-27-24" aria-hidden="true" tabindex="-1"></a><span class="do">### Including the nugget effect Z_i</span></span>
+<span id="interpolate-27-25"><a href="#interpolate-27-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="interpolate-27-26"><a href="#interpolate-27-26" aria-hidden="true" tabindex="-1"></a>lb_fit_n <span class="ot">&lt;-</span> <span class="fu">glgpm</span>(npos <span class="sc">~</span> <span class="fu">log</span>(elevation) <span class="sc">+</span> <span class="fu">gp</span>(<span class="at">nugget =</span> <span class="cn">NULL</span>),</span>
+<span id="interpolate-27-27"><a href="#interpolate-27-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">den =</span> ntest,</span>
+<span id="interpolate-27-28"><a href="#interpolate-27-28" aria-hidden="true" tabindex="-1"></a>                <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
+<span id="interpolate-27-29"><a href="#interpolate-27-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> liberia_sf)</span>
+<span id="interpolate-27-30"><a href="#interpolate-27-30" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lb_fit_n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
+<details class="lsda-explain" data-for="q05">
+<summary class="lsda-explain-head">What this shows</summary>
+<div class="lsda-explain-body">
+<p><code>glgpm()</code> fits the binomial model by Monte Carlo maximum likelihood, and the Monte Carlo error can be large relative to the reported standard errors. On these data, refitting with different seeds gave log-elevation estimates from 0.23 to 0.41, each with a reported standard error of about 0.02. Before trusting a fit, refit it with another seed, and with more samples through <code>control_mcmc = set_control_sim(n_sim = ...)</code>, and check the estimates agree.</p>
+<p>For reference, the maximum likelihood fit (computed with the Laplace approximation and checked by profiling the likelihood over the range) gives 0.337 (SE 0.068) for log elevation, a spatial variance of 0.087 and a range of about 46 km. Doubling elevation multiplies the odds of nodules by <span class="math inline">\(e^{0.337 \ln 2} = 1.26\)</span> (95% CI 1.15 to 1.39). The standard error is larger than the binomial GLM’s (0.040) because the model now allows for spatial correlation.</p>
+</div>
+</details>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week08">
 </div></section>
 <section id="week-8-complete" class="level2">
