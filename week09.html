@@ -1152,7 +1152,7 @@ sort(k, decreasing = TRUE)[1:3]</code>
 </div>
 </details>
 <ol start="2" type="1">
-<li>Test the obesity proportions for spatial autocorrelation with <strong>both</strong> Moran’s I and Geary’s C, and reconcile the two answers.</li>
+<li>Test the obesity proportions for spatial autocorrelation with <strong>both</strong> Moran’s I and Geary’s C, using 100 permutations for each, and reconcile the two answers.</li>
 </ol>
 <div class="cell" data-exercise="q15" data-setup="true">
 <script type="exercise-setup-q15-contents">
@@ -1165,7 +1165,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoicTE1Iiwic2V0dXAiOnRy
 
 </div>
 <script type="webr-94-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImVudmlyIjoibHNkYS1zZXNzaW9uIiwiZXZhbCI6dHJ1ZSwiZXhlcmNpc2UiOiJxMTUifSwiY29kZSI6Imx3Lm53IDwtIG5iMmxpc3R3KG5iLm53LCBzdHlsZSA9IFwiQlwiKVxuXG5zZXQuc2VlZCgxKVxubW9yYW4ubWMobndfb2Jlc2l0eSRfX19fX18sIGxpc3R3ID0gbHcubncsIG5zaW0gPSAxMDAwMClcblxuc2V0LnNlZWQoMSlcbl9fX19fXyhud19vYmVzaXR5JHByb3Bfb2Jlc2UsIGxpc3R3ID0gbHcubncsIG5zaW0gPSAxMDAwMCkifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImVudmlyIjoibHNkYS1zZXNzaW9uIiwiZXZhbCI6dHJ1ZSwiZXhlcmNpc2UiOiJxMTUifSwiY29kZSI6Imx3Lm53IDwtIG5iMmxpc3R3KG5iLm53LCBzdHlsZSA9IFwiQlwiKVxuXG5zZXQuc2VlZCgxKVxubW9yYW4ubWMobndfb2Jlc2l0eSRfX19fX18sIGxpc3R3ID0gbHcubncsIG5zaW0gPSAxMDApXG5cbnNldC5zZWVkKDEpXG5fX19fX18obndfb2Jlc2l0eSRwcm9wX29iZXNlLCBsaXN0dyA9IGx3Lm53LCBuc2ltID0gMTAwKSJ9
 </script>
 </div>
 </div>
@@ -1184,27 +1184,27 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImVudmlyIjoibHNkYS1zZXNzaW9uIiwiZXZhbCI6dHJ1ZSwiZXhl
 <code id="interpolate-98" class="solution-code d-none">lw.nw &lt;- nb2listw(nb.nw, style = "B")
 
 set.seed(1)
-moran.mc(nw_obesity$prop_obese, listw = lw.nw, nsim = 10000)
+moran.mc(nw_obesity$prop_obese, listw = lw.nw, nsim = 100)
 
 set.seed(1)
-geary.mc(nw_obesity$prop_obese, listw = lw.nw, nsim = 10000)</code>
+geary.mc(nw_obesity$prop_obese, listw = lw.nw, nsim = 100)</code>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-99-1"><a href="#interpolate-99-1" aria-hidden="true" tabindex="-1"></a>lw.nw <span class="ot">&lt;-</span> <span class="fu">nb2listw</span>(nb.nw, <span class="at">style =</span> <span class="st">"B"</span>)</span>
 <span id="interpolate-99-2"><a href="#interpolate-99-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="interpolate-99-3"><a href="#interpolate-99-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="interpolate-99-4"><a href="#interpolate-99-4" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.mc</span>(nw_obesity<span class="sc">$</span>prop_obese, <span class="at">listw =</span> lw.nw, <span class="at">nsim =</span> <span class="dv">10000</span>)</span>
+<span id="interpolate-99-4"><a href="#interpolate-99-4" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.mc</span>(nw_obesity<span class="sc">$</span>prop_obese, <span class="at">listw =</span> lw.nw, <span class="at">nsim =</span> <span class="dv">100</span>)</span>
 <span id="interpolate-99-5"><a href="#interpolate-99-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="interpolate-99-6"><a href="#interpolate-99-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="interpolate-99-7"><a href="#interpolate-99-7" aria-hidden="true" tabindex="-1"></a><span class="fu">geary.mc</span>(nw_obesity<span class="sc">$</span>prop_obese, <span class="at">listw =</span> lw.nw, <span class="at">nsim =</span> <span class="dv">10000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="interpolate-99-7"><a href="#interpolate-99-7" aria-hidden="true" tabindex="-1"></a><span class="fu">geary.mc</span>(nw_obesity<span class="sc">$</span>prop_obese, <span class="at">listw =</span> lw.nw, <span class="at">nsim =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <details class="lsda-explain" data-for="q15">
 <summary class="lsda-explain-head">What this shows</summary>
 <div class="lsda-explain-body">
-<p>Moran’s I is <strong>0.2599</strong> with <span class="math inline">\(p = 0.0073\)</span>. Geary’s C is <strong>0.8343</strong> with <span class="math inline">\(p = 0.099\)</span>. Both are pointing the same way — I above its null expectation of <span class="math inline">\(-1/32 = -0.031\)</span>, C below its null expectation of 1 — but only one of them clears 5%.</p>
+<p>With 100 permutations and <code>set.seed(1)</code>, Moran’s I is <strong>0.2599</strong> with <span class="math inline">\(p \approx 0.0099\)</span>. Geary’s C is <strong>0.8343</strong> with <span class="math inline">\(p \approx 0.099\)</span>. Both are pointing the same way — I above its null expectation of <span class="math inline">\(-1/32 = -0.031\)</span>, C below its null expectation of 1 — but only one of them clears 5%.</p>
 <p>A note on <code>geary.mc</code>’s output, because the naming misleads people. It reports <code>alternative hypothesis: greater</code>, yet positive autocorrelation makes C <em>small</em>. <code>spdep</code> has already taken care of the direction: the p-value it prints is the probability of a C this far <strong>below</strong> 1 by chance. You do not need to switch to <code>alternative = "less"</code> — that would test for negative autocorrelation, and here it returns 0.90.</p>
 <p><strong>Why they disagree.</strong> The two statistics weight the data differently. Moran’s I is built from products of deviations from the overall mean, <span class="math inline">\((y_i-\bar y)(y_j-\bar
 y)\)</span>, so it responds to broad clustering: a deprived half of the region and a less deprived half. Geary’s C is built from squared differences between neighbours, <span class="math inline">\((y_i-y_j)^2\)</span>, so it responds to <em>local</em> smoothness and is more affected by sharp contrasts between adjacent districts. North West England has a clear regional gradient — Merseyside and Greater Manchester against the rural north — but also some abrupt district-to-district jumps within the conurbations, and those pull C back towards 1.</p>
-<p><strong>What to report.</strong> Both, and the disagreement. With 33 areas neither test has much power, so a p-value of 0.0073 and one of 0.099 are not as different as they look. The defensible summary is that there is evidence of positive spatial autocorrelation, stronger at the regional scale than between immediate neighbours — which is exactly the situation a CAR model in week 10 is built to handle.</p>
+<p><strong>What to report.</strong> Both, and the disagreement. With 33 areas and only 100 permutations, report the Monte Carlo uncertainty as well: the smallest attainable p-value is <span class="math inline">\(1/101 \approx 0.0099\)</span>. The defensible summary is that there is evidence of positive spatial autocorrelation, stronger at the regional scale than between immediate neighbours — which is exactly the situation a CAR model in week 10 is built to handle.</p>
 </div>
 </details>
 <div id="week-complete" class="lsda-complete" hidden="" data-week="week09">
